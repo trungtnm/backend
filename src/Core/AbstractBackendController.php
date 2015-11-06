@@ -26,7 +26,7 @@ class AbstractBackendController extends BaseController {
 	protected $searchSelects = [];
 	protected $searchFields = [];
 
-	protected $seoFields = false;
+	protected $seo = false;
 
 	protected $dataFields = [];
 
@@ -137,7 +137,7 @@ class AbstractBackendController extends BaseController {
 
 	}
 	/**
-	 * add 2 seo_keyword and seo_description to dataFields if seoFields enable
+	 * add 2 seo_keyword and seo_description to dataFields if seo enable
 	 */
 	public function addSeoFieldsAction() {
 		$this->data['dataFields']['seo_keyword'] = [
@@ -181,7 +181,7 @@ class AbstractBackendController extends BaseController {
 			//subclass must override this method to proccess saving data
 			$updateData = $this->processData($id);
 			//additional SEO fields
-			if($this->seoFields){
+			if($this->seo){
 				$updateData['seo_description'] = request('seo_description');
 				$updateData['seo_keyword']     = request('seo_keyword');
 			}
@@ -208,6 +208,7 @@ class AbstractBackendController extends BaseController {
 			if($item->save()){
 				$this->data['id'] = $item->id;
 				$item->renewCache();
+                $this->afterSave($item);
 				return true;
 			}
 
@@ -267,8 +268,8 @@ class AbstractBackendController extends BaseController {
         if( $item ){
 
             if($item->delete()){
+                $this->afterSave($item, true);
                 $item->renewCache();
-
                 // TO DO : move to config
                 if(is_array($this->uploadFields)){
                     foreach ($this->uploadFields as $field => $info) {
@@ -283,7 +284,16 @@ class AbstractBackendController extends BaseController {
 		return "fail";
 	}
 
+    /**
+     * called after save or delete item
+     *
+     * @param $item
+     * @param bool|false $isDelete
+     */
+    public function afterSave($item, $isDelete = false)
+    {
 
+    }
 
 	public function logging( $dataLog ){
     //TODO: do some logging here

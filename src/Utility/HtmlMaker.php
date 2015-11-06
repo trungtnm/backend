@@ -39,7 +39,7 @@ class HtmlMaker{
 	public static function make($object, $field, $info){
 		if ( !empty($field) && ( $field == 'icon') ) {
 			$value_icon = ( isset($info['alias']) ) ? $object->{$info['alias']} : $object->{$field};
-			$value = '<span class="'.$value_icon.'"></span>';
+			$value = '<span class="'.$value_icon.' fa-lg"></span>';
 		}else{
 			//relational attribute
 			if(!empty($info['alias'])){

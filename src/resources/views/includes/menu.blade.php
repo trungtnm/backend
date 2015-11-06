@@ -1,5 +1,6 @@
 <?php
     $menus = App::make('Trungtnm\Backend\Http\Controller\MenuController')->getMenu();
+    $backendUrl = url(config('trungtnm.backend.uri')) . "/";
 ?>
 <div id="sidebar" class="sidebar responsive">
 <script type="text/javascript">
@@ -15,7 +16,7 @@
     @foreach ($menus as $menu)
     @if( empty($menu['children'] ))
     <li class="hsub @if( $module == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
-        <a class="" href="{{ config('trungtnm.backend.uri').$menu->slug }}" >
+        <a class="" href="{{ $backendUrl.$menu->slug }}" >
             <i class="menu-icon {{{ $menu->icon }}}"></i>
             <span class="menu-text"> {{{ $menu->name }}} </span>
             {{-- <b class="arrow fa fa-angle-down"></b> --}}
@@ -34,7 +35,7 @@
         <ul class="submenu">
         @foreach ($menu['children'] as $child)
                 <li class="menu-child @if( $module == head(explode("/", $child->slug)) ){{ "active" }}@endif">
-                    <a href="{{  config('trungtnm.backend.uri').$child->slug  }}">
+                    <a href="{{  $backendUrl.$child->slug  }}">
                         <i class="menu-icon {{  $child->icon  }}"></i>{{  $child->name }}
                     </a>
                     <b class="arrow"></b>

@@ -5,6 +5,7 @@ namespace Trungtnm\Backend;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Sentinel;
 
 class TrungtnmBackendServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,8 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config/trungtnm.backend.php', 'trungtnm.backend'
         );
+
+        $this->filterPermission();
 
     }
 
@@ -85,6 +88,22 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
             foreach ($modules as $routerPath) {
                 require $routerPath;
             }
+        });
+    }
+
+    /**
+     * check for permission of modules
+     */
+    protected function filterPermission()
+    {
+        Route::filter('hasAccess', function($route, $request, $permission)
+        {
+            if (Sentinel::hasAccess($permission))
+            {
+                return;
+            }
+
+            return redirect(route('accessDenied'))->withErrors('Permission denied.');
         });
     }
 }

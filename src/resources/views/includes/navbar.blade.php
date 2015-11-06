@@ -44,7 +44,7 @@
     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
       
         <li>
-            <a href=" {{ route('changePassword') }} " class="btn btn-default btn-flat">Change Password</a>
+            <a href=" {{ route('UserChangePassword') }} " class="btn btn-default btn-flat">Change Password</a>
         </li>
 
         <li>

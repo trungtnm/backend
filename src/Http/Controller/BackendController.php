@@ -17,14 +17,6 @@ class BackendController extends AbstractBackendController
         $this->init();
     }
 
-    public function addRoleAction()
-    {
-        Sentinel::getRoleRepository()->createModel()->create([
-            'name' => 'Root',
-            'slug' => 'root',
-        ]);
-    }
-
     public function indexAction()
     {
         return view('TrungtnmBackend::index');
@@ -33,6 +25,10 @@ class BackendController extends AbstractBackendController
     public function loginAction()
     {
         $this->layout = null;
+
+        if (Sentinel::check()) {
+            return Redirect::route('indexDashboard');
+        }
 
         if (Request::isMethod('post')) {
             $this->data['status'] = false;
@@ -96,7 +92,7 @@ class BackendController extends AbstractBackendController
      */
     public function accessDeniedAction()
     {
-        $this->layout->content = view('trungtnm.backend.denied');
+        return view('TrungtnmBackend::denied');
     }
 
 }

@@ -1,28 +1,116 @@
 <?php
-Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.uri') ),function(){
+Route::group(array('before' => 'basicAuth' ),function(){
+    // Menu
+    $module = "User";
+    $prefixSlug = str_slug($module);
+    Route::group(array('prefix' => $prefixSlug ),function() use ($module, $prefixSlug){
+        //--index
+        Route::get(
+            '/',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.read',
+                'as'  =>  $module.'Index','uses' => $module.'Controller@indexAction'
+            )
+        );
+        Route::get(
+            'adapter',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.read',
+                'as'  =>  $module.'Adapter',
+                'uses'=>  $module.'Controller@adapterAction'
+            )
+        );
 
-    Route::group(array('prefix' => 'user' ),function(){
-        $prefixName = "UserBackend";
-        $prefixSlug = Str::snake(str_replace('Backend', '', $prefixName) ,'-');
-
-        //--Show ListprefixSlug
-        Route::get('show-list',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'ShowList','uses'   =>  $prefixName.'Controller@showList'));
-        Route::post('get-list',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'GetList','uses'    =>  $prefixName.'Controller@getList'));
         //--Create
-        Route::get('create',        array('before' =>   'hasPermissions:'.$prefixSlug.'-create','as'    =>  $prefixName.'ShowCreate','uses' =>  $prefixName.'Controller@showUpdate'));
-        Route::post('create',       array('before' =>   'hasPermissions:'.$prefixSlug.'-create|csrf','as'   =>  $prefixName.'ShowCreate','uses' =>  $prefixName.'Controller@showUpdate'));
+        Route::get(
+            'create',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.create',
+                'as' => $module.'Create',
+                'uses' => $module.'Controller@editAction'
+            )
+        );
+        Route::post(
+            'create',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.create',
+                'as' => $module.'Create',
+                'uses' => $module.'Controller@editAction'
+            )
+        );
+
         //--Update
-        Route::get('update/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'ShowUpdate','uses' =>  $prefixName.'Controller@showUpdate'));
-        Route::post('update/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit|csrf','as'   =>  $prefixName.'ShowUpdate','uses' =>  $prefixName.'Controller@showUpdate'));
+        Route::get(
+            'update/{id}',
+            array(
+                'before' =>   'hasAccess:'.$prefixSlug.'.edit',
+                'as'    =>  $module.'Update',
+                'uses' => $module.'Controller@editAction'
+            )
+        );
+        Route::post(
+            'update/{id}',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'as' => $module.'Update',
+                'uses' => $module.'Controller@editAction'
+            )
+        );
         //--Update Status
-        Route::post('changeBooleanType', array('before' =>   'hasPermissions:'.$prefixSlug.'-publish','as'    =>  $prefixName.'ChangeBooleanType','uses'   =>  $prefixName.'Controller@changeBooleanType'));
+        Route::post(
+            'toggle-boolean',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.publish',
+                'as' => $module.'ToogleBoolean',
+                'uses' => $module.'Controller@toggleAction'
+            )
+        );
         //--Delete
-        Route::post('delete',       array('before' =>   'hasPermissions:'.$prefixSlug.'-delete','as'    =>  $prefixName.'Delete','uses' =>  $prefixName.'Controller@delete'));
-        //--Permission
-        Route::get('permission/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'ShowPermission','uses' =>  $prefixName.'Controller@showPermission'));
-        Route::post('permission/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit|csrf','as'   =>  $prefixName.'ShowPermission','uses' =>  $prefixName.'Controller@showPermission'));
-        //--Change Password
-        Route::get('change-password', array('as'    =>  'changePassword','uses' =>  $prefixName.'Controller@changePassword'));
-        Route::post('change-password', array('before'   =>  'csrf','as' =>  'changePassword','uses' =>  $prefixName.'Controller@changePassword'));
+        Route::post(
+            'delete',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.delete',
+                'as' => $module.'Delete',
+                'uses' => $module.'Controller@deleteAction'
+            )
+        );
+
+        //--Update Nestable
+        Route::get(
+            'nestable',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'as' => $module.'Nestable',
+                'uses' =>  $module.'Controller@nestableAction'
+            )
+        );
+        Route::post(
+            'nestable',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'as' => $module.'PostNestable',
+                'uses' => $module.'Controller@saveNestableAction'
+            )
+        );
+
+        //-- Change password
+        Route::get(
+            'change-password',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'as' => $module.'ChangePassword',
+                'uses' =>  $module.'Controller@changePasswordAction'
+            )
+        );
+        Route::post(
+            'change-password',
+            array(
+                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'as' => $module.'PostChangePassword',
+                'uses' => $module.'Controller@saveChangePasswordAction'
+            )
+        );
+
     });
+
 });

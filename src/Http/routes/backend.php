@@ -1,14 +1,14 @@
 <?php
-Route::group(['before' => 'basicAuth'],function() {
+Route::group(['before' => 'basicAuth'], function() {
         Route::get('/dashboard', [
             'as' => 'indexDashboard',
             'uses' => 'BackendController@indexAction'
         ]);
-        Route::get('dashboard/logout', [
+        Route::get('logout', [
             'as' => 'logoutBackend',
             'uses' => 'BackendController@logoutAction'
         ]);
-        Route::get('dashboard/access-denied', [
+        Route::get('access-denied', [
             'as' => 'accessDenied',
             'uses' => 'BackendController@accessDeniedAction'
         ]);

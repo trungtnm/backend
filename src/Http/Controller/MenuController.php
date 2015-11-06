@@ -32,6 +32,11 @@ class MenuController extends AbstractBackendController
         $this->data['customView'] = view('TrungtnmBackend::menu.edit', $this->data)->render();
     }
 
+    /**
+     *
+     * @param int $id
+     * @return array
+     */
 	public function processData($id = 0){
 
         $updateData = array(
@@ -45,14 +50,38 @@ class MenuController extends AbstractBackendController
         );
 
         return $updateData;
-
 	}
+
+    /**
+     * add full permission to Root user
+     *
+     * @param $item
+     */
+    public function afterSave($item, $isDelete = false)
+    {
+        $role = Sentinel::findRoleById(1);
+        $module = strtolower($item->module->name);
+        if (!$isDelete) {
+            $role->addPermission($module. '.read')
+                ->addPermission($module. '.create')
+                ->addPermission($module. '.edit')
+                ->addPermission($module. '.publish')
+                ->addPermission($module. '.delete');
+        } else {
+            $role->removePermission($module. '.read')
+                ->removePermission($module. '.create')
+                ->removePermission($module. '.edit')
+                ->removePermission($module. '.publish')
+                ->removePermission($module. '.delete');
+        }
+        $role->save();
+    }
 
 	public function nestableAction(){
 		$this->data['defaultURL'] 	= $this->moduleURL;
 		$this->data['listMenus'] = $this->getMenu();
 
-		$this->layout->content = View::make('ShowNestable', $this->data);
+		return view('TrungtnmBackend::menu.nestable', $this->data);
 	}
 
     public function saveNestableAction(){
@@ -71,17 +100,22 @@ class MenuController extends AbstractBackendController
 
     }
 
+    /**
+     * get menus with permission read of user
+     *
+     * @return array
+     */
 	public function getMenu(){
 		$listMenusTMP 	= Menu::getList();
 		$listMenus 		= array();
 		if( !empty($listMenusTMP) ){
 			foreach( $listMenusTMP as $lm ){
-				if(Sentinel::getUser()->hasAccess(snake_case($lm->module->name, '-') . '-read')){
+				if(Sentinel::getUser()->hasAccess(str_slug($lm->module->name) . '.read')){
 					if( $lm->parent_id == 0 ){
 						$listMenus[$lm->id] = $lm;
 					}
 					else{
-						if(Sentinel::getUser()->hasAccess(snake_case($lm->module->name, '-') . "-read")){
+						if(Sentinel::getUser()->hasAccess(str_slug($lm->module->name) . ".read")){
 							if(!empty($listMenus[$lm->parent_id])){
 								$listMenus[$lm->parent_id]['children'][] = $lm;
 							}
