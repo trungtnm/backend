@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
+#tableList th.sorting:after, .tableList th.sorting:after {
+    content: "";
+}
+#tableList th:after, .tableList th:after {
+    -moz-font-feature-settings: normal;
+    -moz-font-language-override: normal;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: inherit;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    margin-left: 5px;
+    text-rendering: auto;
+}
+#tableList th.sorting_asc:after, .tableList th.sorting_asc:after {
+    content: "";
+}
+#tableList th.sorting_desc:after, .tableList th.sorting_desc:after {
+    content: "";
+}
+
+.filter-radio{margin-top: 29px;
+    text-align: right;} 

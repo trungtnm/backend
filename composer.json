@@ -1,0 +1,15 @@
+{
+    "name": "trungtnm/backend",
+    "description": "A backend package boost up your Laravel 5.1 backend development",
+    "authors": [
+        {
+            "name": "Trung Tran",
+            "email": "trungtran07@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "anchu/ftp": "~2.0",
+      "cartalyst/sentinel": "2.0.*"
+    }
+}

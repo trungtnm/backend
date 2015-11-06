@@ -1,0 +1,19 @@
+
+
+#tableList{border-collapse: collapse;border-spacing: 0;}
+#tableList tr td, #tableList tr th{border: 1px solid #010101;padding: 3px 5px;}
+.tr-total td, .tr-total th{background-color: #ddd;}
+
+.export-pdf #tableList tr td, .export-pdf #table-header-excel tr td{font-size: 10px;}
+.export-pdf #tableList tr th{
+background-color: #43A8FA;
+color: #FFF;
+font-weight: normal;
+font-size: 10px;
+width: 90px;
+border: 1px solid #43A8FA;
+text-align: left;}
+.export-pdf #tableList{border: 1px solid #ddd;margin-top: 10px;}
+.export-pdf #tableList tr td{border:none;border-bottom: 1px solid #ddd;}
+.export-pdf #table-header-excel tr td{width: 200px;}
+.export-pdf #table-header-excel tr td h2{margin-bottom: 8px;}

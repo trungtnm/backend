@@ -1,0 +1,1 @@
+<a href="javascript:;" onclick="toggleBoolean('{{$item->id}}', '{{ $item->{$field} }}','{{$field}}')"><i class="{{ $maker->getClassTypeBoolean($item->{$field}) }}"></i></a>

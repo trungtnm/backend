@@ -1,0 +1,300 @@
+.form-filter-advertise{
+    margin-bottom: 20px;
+}
+
+.layout-hayhaytv
+{
+    background-image: url('../../img/layout_hayhay_tv.png');
+}
+
+
+.wrapper-shapeshifted {
+    border: 1px dashed #CCC;
+    position: relative;
+    width: 101% ;
+    height: 1970px !important;
+}
+.wrapper-shapeshifted > div.advertise
+{
+    background:#ddd;
+    cursor: pointer;        
+}
+
+.wrapper-shapeshifted > div.active
+{
+    background:#d15b47!important;   
+    color: white;
+}
+
+.wrapper-shapeshifted > div {
+    background: #ffffff;
+    border: 2px dashed #CCC;
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    text-align: center;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="skycrapper-left"] { 
+    width: 80px;
+    height: 160px;
+    left: 15px !important;
+    text-align: center;
+    top:15px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="poster-banner"] 
+{
+    width: 360px;
+    height: 120px;
+    left: 110px !important;
+    top:15px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="skycrapper-right"] { 
+    width: 80px;
+    height: 160px;
+    left: 480px !important;
+    top:15px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="top-banner"] { 
+    width: 320px;
+    height: 30px;
+    left: 128px !important;
+    top: 145px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="film-hot"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 185px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="mid-banner-1"] { 
+    width: 320px;
+    height: 50px;
+    left: 80px !important;
+    top: 400px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="film-odd"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 460px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="mid-banner-2"] { 
+    width: 320px;
+    height: 50px;
+    left: 80px !important;
+    top: 670px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="film-collection"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 730px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="mid-banner-3"] { 
+    width: 320px;
+    height: 50px;
+    left: 80px !important;
+    top: 940px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="jjchannel"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 1000px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="film-cinema"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 1210px !important;
+}   
+
+.wrapper-shapeshifted > div[data-ss-colspan="show"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 1420px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="clip"] { 
+    width: 320px;
+    height: 200px;
+    left: 80px !important;
+    top: 1630px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="bottom-banner"] { 
+    width: 320px;
+    height: 50px;
+    left: 80px !important;
+    top: 1840px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="side-banner-1"] { 
+    width: 120px;
+    height: 130px;
+    left: 420px !important;
+    top: 185px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-news-1"] { 
+    width: 120px;
+    height: 60px;
+    left: 420px !important;
+    top: 325px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="side-film-odd-hot"] { 
+    width: 120px;
+    height: 180px;
+    left: 420px !important;
+    top: 390px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-film-collection-hot"] { 
+    width: 120px;
+    height: 180px;
+    left: 420px !important;
+    top: 580px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-banner-2"] { 
+    width: 120px;
+    height: 240px;
+    left: 420px !important;
+    top: 770px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-intro-hayhaytv"] { 
+    width: 120px;
+    height: 50px;
+    left: 420px !important;
+    top: 1020px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-banner-3"] { 
+    width: 120px;
+    height: 240px;
+    left: 420px !important;
+    top: 1080px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-tag"] { 
+    width: 120px;
+    height: 80px;
+    left: 420px !important;
+    top: 1330px !important;
+}
+.wrapper-shapeshifted > div[data-ss-colspan="side-banner-4"] { 
+    width: 120px;
+    height: 130px;
+    left: 420px !important;
+    top: 1420px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="balloon"] { 
+    width: 120px;
+    height: 130px;
+    left: 420px !important;
+    top: 1560px !important;
+}
+
+.wrapper-shapeshifted > div[data-ss-colspan="popup"] { 
+    width: 320px;
+    height: 50px;
+    left: 80px !important;
+    top: 1900px !important;
+}
+
+
+.wrapper-shapeshifted > .ss-placeholder-child {
+    background: transparent;
+    border: 1px dashed blue;
+}
+
+.advertise-choose-page .btn.btn-white.active , .advertise-choose-page a.active{
+    background: #d15b47!important;
+    color: white !important;  
+}
+
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="side-film-odd-hot"] {    
+    top:320px !important
+}
+
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="side-banner-2"] {    
+    top:510px !important
+}
+
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="side-banner-3"] {    
+    top:760px !important
+}
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="side-tag"] {    
+    top:1010px !important;
+}
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="bottom-banner"] {    
+    top:1040px !important;
+}
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="film-hot"] {    
+    height: 850px;
+}
+
+
+.advertise-page-category .wrapper-shapeshifted  > div[data-ss-colspan="side-banner-4"] { 
+    top: 1100px !important
+}
+
+.advertise-page-category .wrapper-shapeshifted > div[data-ss-colspan="balloon"] { 
+    top: 1240px !important
+}
+
+.advertise-page-category .wrapper-shapeshifted  > div[data-ss-colspan="popup"] { 
+    top: 1120px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-rating"] {    
+    height: 130px;
+    left: 420px !important;
+    top: 185px !important;
+    width: 120px;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-banner-1"] {     
+    top: 320px !important;
+}
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-film-related"] {    
+    width: 120px;
+    height: 180px;
+    left: 420px !important;
+    top: 460px !important;
+}
+
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-banner-2"] {    
+    top:650px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-banner-3"] {    
+    top:900px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="bottom-banner"] {    
+    top:1090px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="film-hot"] {    
+    height:900px !important;
+}
+
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="side-banner-4"] { 
+    top:1150px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="balloon"] { 
+    top: 1290px !important;
+}
+
+.advertise-page-detail .wrapper-shapeshifted > div[data-ss-colspan="popup"] { 
+    top: 1160px !important;
+}
