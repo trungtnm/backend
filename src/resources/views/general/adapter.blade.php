@@ -82,12 +82,12 @@
 				<td width="200">
 					<div class="col-md-5">                                      
 		                <a class="btn btn-sm btn-info" href="{{ route($module.'Update', $item->id) }}">
-		                    <i class="ace-icon fa fa-pencil bigger-120"></i>Sửa
+		                    <i class="ace-icon fa fa-pencil bigger-120"></i>Edit
 		                </a>
 		            </div>
 		            <div class="col-md-5">
 		            	<a class="btn btn-sm btn-danger" onclick="deleteItem({{$item->id}})" href="javascript:;">
-		                    <i class="ace-icon fa fa-trash-o bigger-120"></i>Xóa
+		                    <i class="ace-icon fa fa-trash-o bigger-120"></i>Delete
 		                </a>
 		            </div>
 		        </td>

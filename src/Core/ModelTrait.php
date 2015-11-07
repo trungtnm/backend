@@ -26,7 +26,7 @@ trait ModelTrait{
      * @return mixed
      */
     public function scopeSlug($query, $slug){
-        return $query->where('slug',$slug);
+        return $query->where('slug', $slug);
     }
 
     /**
@@ -43,7 +43,7 @@ trait ModelTrait{
      * @return mixed
      */
     public function scopeActive($query){
-        return $query->where('status',1);
+        return $query->where('status', true);
     }
 
     /**
@@ -51,7 +51,7 @@ trait ModelTrait{
      * @return mixed
      */
     public function scopeInActive($query){
-        return $query->where('status',0);
+        return $query->where('status', false);
     }
 
     /**
@@ -68,11 +68,16 @@ trait ModelTrait{
                 $query->where($filterBy, 'LIKE', "%{$keyword}%");
             }else{
                 foreach( $filterBy as $key => $field){
-                    $searchField = "";
-                    if(strpos($field['name'], 'search__') !== FALSE){
-                        $searchField = explode_end('__',$field['name']);
+                    if ($field['name'] == 'search_id' && !empty($field['value'])) {
+                        //find by ID
+                        $query->where('id', $field['value']);
+                        break;
                     }
 
+                    $searchField = "";
+                    if(strpos($field['name'], 'search__') !== FALSE){
+                        $searchField = explode_end('__', $field['name']);
+                    }
                     if($searchField){
 
                         if($searchField == 'filterBy'){
@@ -115,12 +120,6 @@ trait ModelTrait{
     }
 
     /**
-     * @return array
-     */
-    public function getShowField(){
-        return $this->showField;
-    }
-    /**
      * fill data to model before saving
      * @param  [array] $data model data to be saved into database
      * @return new object model with updated data
@@ -146,21 +145,21 @@ trait ModelTrait{
      * edited from source : http://culttt.com/2014/02/24/working-pagination-laravel-4/
      * @param string $key : key cache for this list, not inlude page
      * @param int $page
-     * @param int $perPage
+     * @param int $perpage
      * @return Paginator
      */
-    public function scopeByPage($query, $key, $cacheTime, $perPage = 10, $page = null)
+    public function scopeByPage($query, $key, $cacheTime, $perpage = 10, $page = null)
     {
-        $page = $page !== null ? $page : request('p');
+        $page = $page !== null ? $page : Input::get('p');
         $page = intval($page) < 1 ? 1 : $page;
-        $key  = $key . $page . "_" . $perPage;
-        $items = Cache::remember($key, $cacheTime, function() use ($perPage, $page, $query){
-            return $query->skip($perPage * ($page - 1))->take($perPage)->get();
+        $key  = $key . $page . "_" . $perpage;
+        $items = Cache::remember($key, $cacheTime, function() use ($perpage, $page, $query){
+            return $query->skip($perpage * ($page - 1))->take($perpage)->get();
         });
         $totalItems = $query->count();
         $data       = $items->all();
 
-        $retval     = Paginator::make($data, $totalItems, $perPage);
+        $retval     = Paginator::make($data, $totalItems, $perpage);
         return $retval;
     }
 
@@ -168,14 +167,14 @@ trait ModelTrait{
      * Delete getByPage cache
      * @param string $key : key cache for this list, not inlude page
      * @param int $totalItems
-     * @param int $perPage
+     * @param int $perpage
      * @return boolean
      */
-    public function forgetByPage($key, $totalItems, $perPage = 10){
-        $totalPages = ceil($totalItems / $perPage);
+    public function forgetByPage($key, $totalItems, $perpage = 10){
+        $totalPages = ceil($totalItems / $perpage);
         for($p = 1; $p <= $totalPages; $p++){
             try{
-                $k = $key . $p . "_" . $perPage;
+                $k = $key . $p . "_" . $perpage;
                 Cache::forget($k);
             }
             catch(\Exception $e){

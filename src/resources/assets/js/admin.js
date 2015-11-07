@@ -1,3 +1,4 @@
+var access_denied = "You do not have permission to perform this action";
 var pagination = {
 
     property : {
@@ -155,7 +156,7 @@ function toggleBoolean(id, value, field){
         function(data){
 
             if( data == "access-denied" ){
-                alert("Bạn không có quyền thực thi hành động này");
+                alert(access_denied);
             }else if( data != "fail" ){
                 $("."+field+"-"+id).html( data );
             }
@@ -165,7 +166,7 @@ function toggleBoolean(id, value, field){
 
 
 function deleteItem(id) {
-    if (confirm("Bạn có muốn xóa?")) {
+    if (confirm("Are you sure to delete this item?")) {
         var url = root+module+"/delete";
         $.post(
             url,
@@ -177,7 +178,7 @@ function deleteItem(id) {
                 if( data == "success" ){
                     pagination.getResult();
                 }else if( data == "access-denied" ){
-                    alert("Bạn không có quyền thực thi hành động này");
+                    alert(access_denied);
                 }
             }
         );

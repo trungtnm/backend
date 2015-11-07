@@ -127,7 +127,7 @@ class HtmlMaker{
 			$onClick = "";
 		}
 		else{
-			$onClick = "toggleBoolean({$this->id}, {$this->value},'{$this->field}')";
+			$onClick = "toggleBoolean({$this->id}, ".intval($this->value).",'{$this->field}')";
 		}
 		return '<td class="'.$this->field.'-'.$this->id.'"><a href="javascript:;" onclick="'.$onClick.'"><i class="'.$this->getClassTypeBoolean($this->value).'"></i></a></td>';
 	}
@@ -141,24 +141,28 @@ class HtmlMaker{
 	 *     Helper get class of boolean type
 	 *     @return [type] [description]
 	 */
-	public static function getClassTypeBoolean($value) {
+	public function getClassTypeBoolean($value) {
     	return ($value) ? "fa fa-check fa-check-right" : "fa fa-times fa-times-wrong";
     }
 
-    public static function makeInput($field, $options, $value = null, $data = [] ){
+    public function makeInput($field, $options, $value = null, $data = [] ){
     	$view = "TrungtnmBackend::general.input".ucfirst(strtolower($options['type']));
     	$helpText =
             !empty($options['help'])
             ? view('TrungtnmBackend::general.helpText', ['helpText' => $options['help'] ] )->render()
             : "";
 
-    	return view($view, [
-            'field' => $field,
-            'value' => $value,
-            'options' => $options,
-            'data' => $data,
-            'helpText' => $helpText
-        ])->render();
+    	return view(
+            $view,
+            [
+                'field' => $field,
+                'value' => $value,
+                'options' => $options,
+                'data' => $data,
+                'helpText' => $helpText
+            ]
+        )->render();
+
     }
 
 }

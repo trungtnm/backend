@@ -224,7 +224,7 @@ class AbstractBackendController extends BaseController {
 	 * @param  integer $id [description]
 	 * @return [type]      [description]
 	 */
-	public function processData($id = 0){
+    public function processData($id = 0){
 		$updateData = array(
 			'id'            => 	$id,
 			//sample data
@@ -253,10 +253,9 @@ class AbstractBackendController extends BaseController {
             $item->{$field} = $value;
             if( $item->save() ){
                 $item->renewCache();
-                return view('TrungtnmBackend::general.toggle', array(
-                    'field'	=>	$field,
-                    'item'	=>	$item
-                ));
+                $this->data['field'] = $field;
+                $this->data['item'] = $item;
+                return view('TrungtnmBackend::general.toggle', $this->data);
             }
         }
 	}

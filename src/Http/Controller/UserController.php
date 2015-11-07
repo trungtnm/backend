@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Sentinel;
 use Trungtnm\Backend\Core\AbstractBackendController;
+use Trungtnm\Backend\Model\Role;
 use Trungtnm\Backend\Model\User;
 
 class UserController extends AbstractBackendController
@@ -22,7 +23,7 @@ class UserController extends AbstractBackendController
 
     public function getEditData()
     {
-
+        $this->data['roles'] = array_column(Role::where('id', '!=', Role::ROOT)->get()->toArray(), 'name', 'id');
     }
 
     /**

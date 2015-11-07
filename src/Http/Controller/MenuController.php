@@ -59,22 +59,42 @@ class MenuController extends AbstractBackendController
      */
     public function afterSave($item, $isDelete = false)
     {
-        $role = Sentinel::findRoleById(1);
         $module = strtolower($item->module->name);
-        if (!$isDelete) {
+        $adminRoles = [
+            Sentinel::findRoleById(1),
+            Sentinel::findRoleById(2)
+        ];
+        if ($isDelete) {
+            $this->addPermission($adminRoles, $module);
+        } else {
+            $this->removePermission($adminRoles, $module);
+        }
+    }
+
+    public function addPermission($roles, $module)
+    {
+        foreach ($roles as $role) {
             $role->addPermission($module. '.read')
                 ->addPermission($module. '.create')
                 ->addPermission($module. '.edit')
                 ->addPermission($module. '.publish')
-                ->addPermission($module. '.delete');
-        } else {
-            $role->removePermission($module. '.read')
-                ->removePermission($module. '.create')
-                ->removePermission($module. '.edit')
-                ->removePermission($module. '.publish')
-                ->removePermission($module. '.delete');
+                ->addPermission($module. '.delete')
+                ->save();
         }
-        $role->save();
+        return true;
+    }
+
+    public function removePermission($roles, $module)
+    {
+        foreach ($roles as $role) {
+            $role->removePermission($module . '.read')
+                ->removePermission($module . '.create')
+                ->removePermission($module . '.edit')
+                ->removePermission($module . '.publish')
+                ->removePermission($module . '.delete')
+                ->save();
+        }
+        return true;
     }
 
 	public function nestableAction(){

@@ -2,9 +2,12 @@
 namespace Trungtnm\Backend\Model;
 
 use Trungtnm\Backend\Core\AbstractModel;
+use Trungtnm\Backend\Core\ModelTrait;
 
 class Menu extends AbstractModel
 {
+    use ModelTrait;
+
     protected $table = 'backend_menus';
 
     public $showFields = [

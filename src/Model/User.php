@@ -1,10 +1,14 @@
 <?php
 namespace Trungtnm\Backend\Model;
 
-class User extends \Cartalyst\Sentinel\Users\EloquentUser {
+use Trungtnm\Backend\Core\ModelTrait;
+
+class User extends \Cartalyst\Sentinel\Users\EloquentUser
+{
+    use ModelTrait;
 
 	public $table = 'backend_users';
-	public $showAddButton = true;
+
 	public static $loginRules	=	array(
 		"loginEmail"	=>	"required",
 		"loginPassword"	=>	"required"
@@ -30,6 +34,71 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser {
         "newPassword_confirmation.min"  =>  "Password confirmation must be at least 6 characters"
 	);
 
+    public $showFields = [
+        'username'         =>  [
+            'label'         =>  'Username',
+            'type'          =>  'text'
+        ],
+        'email'         =>  [
+            'label'         =>  'Email',
+            'type'          =>  'text'
+        ],
+        'Role'         =>  [
+            'label'         =>  'Role',
+            'type'          =>  'text',
+            'alias'         =>  'role.name'
+        ],
+        'first_name'         =>  [
+            'label'         =>  'First name',
+            'type'          =>  'text'
+        ],
+        'last_name'         =>  [
+            'label'         =>  'Last name',
+            'type'          =>  'text'
+        ],
+        'status'         =>  [
+            'label'         =>  'Status',
+            'type'          =>  'boolean'
+        ],
+        'created_at'    =>  [
+            'label'         =>  'Created at',
+            'type'          =>  'text'
+        ]
+    ];
+
+    public $dataFields = [
+        'username' => [
+            'label' =>  'Username',
+            'type'  =>  'text'
+        ],
+        'email' => [
+            'label' =>  'Email Address',
+            'type'  =>  'text'
+        ],
+        'password' => [
+            'label' =>  'Password',
+            'type'  =>  'password'
+        ],
+        'first_name' => [
+            'label' =>  'First name',
+            'type'  =>  'text'
+        ],
+        'last_name' => [
+            'label' =>  'Last name',
+            'type'  =>  'text'
+        ],
+        'status' => [
+            'label'     => 'Status',
+            'type'      =>  'select',
+            'defaultOption' => [ '1' => "Active", '0' => "Inactive"]
+        ],
+        'role_id' => [
+            'label'     => 'Role',
+            'type'      =>  'select',
+            'data'      =>  'roles',
+        ],
+    ];
+
 	public function getUpdateRules(){
 		return array(
 			//"username"			=>	"required|min:5",
@@ -47,38 +116,7 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser {
 		);
 	}
 
-	public function getShowField(){
-		return array(
-			//'username'		=>	trans('text.username'),
-			'email'		=>	trans('text.email'),
-			'created_at'	=>	trans('text.created_at'),
-		);
-	}
 
-	public function getSearchField(){
-		return array(
-			//'username'		=>	trans('text.username'),
-			'email'			=> trans('text.username'),
-		);
-	}
-
-	public function scopeSearch($query, $keyword = '', $filterBy = 0)
-	{
-		if( !empty($keyword) ){
-
-			if( !empty($filterBy)  ){
-				$query->where($filterBy, 'LIKE', "%{$keyword}%");
-			}else{
-				if( !empty($this->searchField) ){
-					foreach( $this->searchField as $field => $title){
-						$query->orWhere($field, 'LIKE', "%{$keyword}%");
-					}
-				}
-			}
-
-		}
-		return $query;
-	}
 
 
 }

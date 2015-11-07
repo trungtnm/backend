@@ -2,8 +2,11 @@
 namespace Trungtnm\Backend\Model;
 
 use Trungtnm\Backend\Core\AbstractModel;
+use Trungtnm\Backend\Core\ModelTrait;
 
-class Module extends AbstractModel {
+class Module extends AbstractModel
+{
+    use ModelTrait;
 
 	protected $table = 'backend_modules';
 	public $appends = ['moduleName'];
@@ -11,7 +14,7 @@ class Module extends AbstractModel {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-	public function Menu(){
+	public function menu(){
 		return $this->hasOne('Trungtnm\Backend\Model\Menu', 'module_id');
 	}
 
@@ -21,8 +24,8 @@ class Module extends AbstractModel {
      * @return mixed
      */
 	function getModuleNameAttribute(){
-		if(!empty($this->Menu->id)){
-			return $this->Menu->name;
+		if(!empty($this->menu->id)){
+			return $this->menu->name;
 		}
 		return $this->name;
 	}
