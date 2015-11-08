@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\View;
 use Trungtnm\Backend\Model\Module;
 use Trungtnm\Backend\Utility\HtmlMaker;
 
-class AbstractBackendController extends BaseController {
+class CoreBackendController extends BaseController {
 
-	public $layout        = 'layout.backend';
+    protected $module        = null;
+
+    public $layout        = 'layout.backend';
     protected $data          = [];
-	protected $module        = null;
+    protected $updateData    = [];
 	protected $model         = null;
 	protected $moduleURL     = null;
 	protected $moduleName    = null;
@@ -102,8 +104,11 @@ class AbstractBackendController extends BaseController {
         $this->data['showFields'] 	= $this->model->showFields;
 
 
-        $this->data['lists'] = $this->model->search($keyword, $filterBy)->orderBy($defaultField, $defaultOrder)->paginate($showNumber);
-//        pr((array) $this->data['lists'],1);
+        $this->data['lists'] =
+            $this->model->search($keyword, $filterBy)
+                ->orderBy($defaultField, $defaultOrder)
+                ->paginate($showNumber);
+
         return view('TrungtnmBackend::general.adapter', $this->data);
 	}
 
@@ -126,7 +131,6 @@ class AbstractBackendController extends BaseController {
 				return $this->redirectAfterSave(request('save'));
 			}
 		}
-
 
 		$this->data['dataFields'] = $this->model->dataFields;
 
@@ -179,31 +183,13 @@ class AbstractBackendController extends BaseController {
 
 		if( $validate->passes() ){
 			//subclass must override this method to proccess saving data
-			$updateData = $this->processData($id);
+			$this->processData($id);
 			//additional SEO fields
-			if($this->seo){
-				$updateData['seo_description'] = request('seo_description');
-				$updateData['seo_keyword']     = request('seo_keyword');
-			}
+			$this->handleSeo();
 			// File Upload
-			if(is_array($this->uploadFields)){
-				foreach ($this->uploadFields as $field) {
-					if(request('inputURL_'. $field)){
-						$updateData[$field] = request($field);
-					}
-					else{
-						if(Input::hasFile($field)){
-							$updateData[$field] = uploadImage($field, $this->dirUpload);
-						}
-					}
-					if($id > 0){
-						//update - delete old file
-					}
-				}
-			}
-			// End file Upload	
-			$model = get_class($this->model);
-			$item = (new $model )->fillData($updateData);
+            $this->handleFileUpload();
+			// End file Upload
+			$item = $this->fillData();
 
 			if($item->save()){
 				$this->data['id'] = $item->id;
@@ -213,32 +199,12 @@ class AbstractBackendController extends BaseController {
 			}
 
 		}else{
-			$data['validate'] = $validate->messages();
+            $this->data['validate'] = $validate->messages();
 		}
 
-		return FALSE;
+		return false;
 
 	}
-	/**
-	 * Process data before save, child controller must extend this method to customize data saving
-	 * @param  integer $id [description]
-	 * @return [type]      [description]
-	 */
-    public function processData($id = 0){
-		$updateData = array(
-			'id'            => 	$id,
-			//sample data
-			// 'status'        =>	(int) request('status'),
-			// 'campaign_name' =>	request('campaign_name'),
-			// 'id_partner'    =>	request('id_partner'),
-			// 'cat_id'        =>	request('cat_id'),
-			// 'campaign_type' =>	request('campaign_type'),
-			// 'date_start'    =>	request('date_start'),
-			// 'date_end'      =>	request('date_end'),
-		);
-		return $updateData;
-	}
-
 
 	public function toggleAction(){
 
@@ -284,6 +250,41 @@ class AbstractBackendController extends BaseController {
 	}
 
     /**
+     * handle SEO fields
+     */
+    public function handleSeo()
+    {
+        if($this->seo){
+            $this->updateData['seo_description'] = request('seo_description');
+            $this->updateData['seo_keyword']     = request('seo_keyword');
+        }
+    }
+
+    /**
+     * handle file uploads
+     */
+    public function handleFileUpload()
+    {
+        if(!is_array($this->uploadFields)) {
+            return;
+        }
+
+        foreach ($this->uploadFields as $field) {
+            if(request('inputURL_'. $field)){
+                $this->updateData[$field] = request($field);
+            }
+            else{
+                if(Input::hasFile($field)){
+                    $this->updateData[$field] = uploadImage($field, $this->dirUpload);
+                }
+            }
+            if($id > 0){
+                //update - delete old file
+            }
+        }
+    }
+
+    /**
      * called after save or delete item
      *
      * @param $item
@@ -294,9 +295,27 @@ class AbstractBackendController extends BaseController {
 
     }
 
-	public function logging( $dataLog ){
+	public function logging($dataLog){
     //TODO: do some logging here
 	}
 
+    /**
+     * fill data to model before saving
+     * @param  [array] $data model data to be saved into database
+     * @return new object model with updated data
+     */
+    public function fillData(){
+        $item = clone $this->model;
+        if (is_array($this->updateData)) {
+            if (!empty($this->updateData['id'])) {
+                $item = $item->find($this->updateData['id']);
+            }
+            foreach ($this->updateData as $field => $value) {
+                $item->$field = $value;
+            }
+        }
+        return $item;
+
+    }
 
 }

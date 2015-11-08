@@ -2,7 +2,7 @@
     <div class="widget-header">
         <h5 class="widget-title bigger lighter">
             <i class="ace-icon fa fa-search"></i>
-            Tìm nhanh
+            Quick filter
         </h5>
     </div>
     <div class="widget-body">
@@ -19,9 +19,13 @@
                             </div>
                             @if(!empty($searchFields))
                                 <div class="relative pull-left">
-                                    <label for="keyword"><span class="label label-info label-block">Từ khóa</span></label>
+                                    <label for="keyword">
+                                        <span class="label label-info label-block">Keyword</span>
+                                    </label>
                                     <input type="text" name="keyword" value="{{ request('keyword') }}" id="keyword"/>
-                                    <label for="search__filterBy"><span class="label label-info label-block">tìm theo</span></label>
+                                    <label for="search__filterBy">
+                                        <span class="label label-info label-block">by</span>
+                                    </label>
                                     <select name="search__filterBy" id="" class="btn-primary">
                                         @foreach($searchFields as $val => $text)
                                             <option value="{{  $val }}">{{$text}}</option>
@@ -35,7 +39,7 @@
                                     <div class="relative pull-left">
                                         <label for="search__{{ $field }}"><span class="label label-info label-block">{{$info['label']}}</span></label>
                                         <select name="search__{{ $field }}" id="" class="{{ !empty($info['class']) ? $info['class'] : 'btn-primary' }}">
-                                            <option value="all">Tất cả</option>
+                                            <option value="all">All</option>
                                             @foreach($$info['options'] as $val => $text)
                                                 <option value="{{  $val }}">{{$text}}</option>
                                             @endforeach
@@ -45,9 +49,9 @@
                             @endif
                             {{-- END SEARCH SELECTS --}}
                             <div class="relative pull-left">
-                                <span class="label label-info label-block">Trạng thái</span>
+                                <span class="label label-info label-block">Status</span>
                                 <select name="search__status" id="" class="btn-primary">
-                                    <option value="all">Tất cả</option>
+                                    <option value="all">All</option>
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>

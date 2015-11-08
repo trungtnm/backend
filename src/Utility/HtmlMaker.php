@@ -145,6 +145,15 @@ class HtmlMaker{
     	return ($value) ? "fa fa-check fa-check-right" : "fa fa-times fa-times-wrong";
     }
 
+    /**
+     * render input field
+     *
+     * @param $field
+     * @param $options
+     * @param null $value
+     * @param array $data
+     * @return string
+     */
     public function makeInput($field, $options, $value = null, $data = [] ){
     	$view = "TrungtnmBackend::general.input".ucfirst(strtolower($options['type']));
     	$helpText =
@@ -165,4 +174,15 @@ class HtmlMaker{
 
     }
 
+    /**
+     * @param $fieldName
+     * @return string
+     */
+    public function showError($validate, $fieldName)
+    {
+        return view(
+            'TrungtnmBackend::general.error',
+            ['validate' => $validate, 'fieldName' => $fieldName]
+        )->render();
+    }
 }

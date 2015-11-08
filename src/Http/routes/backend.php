@@ -1,5 +1,5 @@
 <?php
-Route::group(['before' => 'basicAuth'], function() {
+Route::group(['before' => 'hasAccess'], function() {
         Route::get('/dashboard', [
             'as' => 'indexDashboard',
             'uses' => 'BackendController@indexAction'

@@ -61,6 +61,9 @@
                     @if (Session::has('message'))
                         <div class="alert {{Session::get('status') ? 'alert-success' : 'alert-danger'}} ">{{ Session::get('message') }}</div>
                     @endif
+                    @if (!empty($message))
+                        <div class="alert {{ !empty($status) ? 'alert-success' : 'alert-danger'}}">{!! $message !!}</div>
+                    @endif
                     @yield('content')
                     @section('script')
                         {{-- this section is for inpage script --}}

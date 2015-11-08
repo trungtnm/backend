@@ -120,26 +120,6 @@ trait ModelTrait{
     }
 
     /**
-     * fill data to model before saving
-     * @param  [array] $data model data to be saved into database
-     * @return new object model with updated data
-     */
-    public function fillData($data){
-        if(is_array($data)){
-            $that = clone $this;
-            if(!empty($data['id']) && $data['id'] > 0){
-                $that = $this->find($data['id']);
-            }
-            foreach ($data as $field => $value) {
-                $that->$field = $value;
-            }
-        }
-
-        return $that;
-
-    }
-
-    /**
      * Get results by page
      * if data has conditions, it must be queried before call this method
      * edited from source : http://culttt.com/2014/02/24/working-pagination-laravel-4/

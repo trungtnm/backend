@@ -5,14 +5,7 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="page-header">
-        <h1>
-            <i id="moduleIcon" class=""></i>
-            {{ ucfirst($moduleName) }}
-        </h1>
-    </div>
-</div>
+@include('TrungtnmBackend::includes.moduleHeader')
 <div class="row-fluid">
     @yield('filter')
 </div>

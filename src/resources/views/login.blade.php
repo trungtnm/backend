@@ -10,13 +10,13 @@
         <fieldset>
             @if( !empty($message) )
             <div class="row-fluid">
-                <div class="bg bg-danger">{{ $message }}</div>
+                <div class="label label-danger pb10">{{ $message }}</div>
             </div>
             @endif
             <div class="form-group">
-                <input class="form-control" placeholder="Email login" name="loginEmail" type="text" autofocus>
-                @if( isset($validate) && $validate->has('loginEmail')  )
-                    <span class="label label-danger">{{ $validate->first('loginEmail') }}</span>
+                <input class="form-control" placeholder="Username" name="loginUsername" type="text" autofocus>
+                @if( isset($validate) && $validate->has('loginUsername') )
+                    <span class="label label-danger">{{ $validate->first('loginUsername') }}</span>
                 @endif
             </div>
             <div class="form-group">

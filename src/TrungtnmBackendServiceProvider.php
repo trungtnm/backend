@@ -96,14 +96,19 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
      */
     protected function filterPermission()
     {
-        Route::filter('hasAccess', function($route, $request, $permission)
+        Route::filter('hasAccess', function($route, $request, $permission = null)
         {
-            if (Sentinel::hasAccess($permission))
-            {
-                return;
+            if (Sentinel::check()) {
+                if (empty($permission) || Sentinel::hasAccess([$permission])) {
+                    return;
+                }
+            }
+            if (empty($permission)) {
+                return redirect(route('loginBackend'))->withErrors('Please login first');
+            } else {
+                return redirect(route('accessDenied'))->withErrors('Permission denied.');
             }
 
-            return redirect(route('accessDenied'))->withErrors('Permission denied.');
         });
     }
 }

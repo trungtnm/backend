@@ -3,11 +3,12 @@ namespace Trungtnm\Backend\Http\Controller;
 
 use Illuminate\Support\Facades\Request;
 use Sentinel;
-use Trungtnm\Backend\Core\AbstractBackendController;
+use Trungtnm\Backend\Core\BackendControllerInterface;
+use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Menu;
 use Trungtnm\Backend\Model\Module;
 
-class MenuController extends AbstractBackendController
+class MenuController extends CoreBackendController  implements BackendControllerInterface
 {
     protected $data = [];
 
@@ -35,11 +36,9 @@ class MenuController extends AbstractBackendController
     /**
      *
      * @param int $id
-     * @return array
      */
 	public function processData($id = 0){
-
-        $updateData = array(
+        $this->updateData = array(
             'id'        =>  $id,
             'status'    =>	(int) request('status'),
             'name'      =>	trim(request('name')),
@@ -48,8 +47,6 @@ class MenuController extends AbstractBackendController
             'slug'      =>	trim(request('slug')),
             'icon'      =>	trim(request('icon')),
         );
-
-        return $updateData;
 	}
 
     /**
@@ -64,7 +61,7 @@ class MenuController extends AbstractBackendController
             Sentinel::findRoleById(1),
             Sentinel::findRoleById(2)
         ];
-        if ($isDelete) {
+        if (!$isDelete) {
             $this->addPermission($adminRoles, $module);
         } else {
             $this->removePermission($adminRoles, $module);

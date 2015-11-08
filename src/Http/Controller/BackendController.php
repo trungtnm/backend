@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Sentinel;
-use Trungtnm\Backend\Core\AbstractBackendController;
+use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\User;
 
-class BackendController extends AbstractBackendController
+class BackendController extends CoreBackendController
 {
     protected $module = "backend";
     public function __construct()
@@ -38,28 +38,38 @@ class BackendController extends AbstractBackendController
                 if (session_id() == '') {
                     @session_start();
                 }
+                // set session for ckeditor
                 $_SESSION['isLoggedIn'] = true;
 
                 return Redirect::route('indexDashboard');
             }
         }
-
         return view('TrungtnmBackend::login', $this->data);
     }
 
     public function checkLogin(&$data)
     {
-
-        $validate = Validator::make(Input::all(), User::$loginRules, User::$loginLangs);
+        $user = new User();
+        $validate = Validator::make(Input::all(), $user->loginRules, $user->loginLangs);
 
         if ($validate->passes()) {
             try {
+                $user = User::where([
+                    'username' => request('loginUsername'),
+                    'status'   => 1
+                ])
+                ->first();
+                if (!$user) {
+                    throw new \Exception('This user has been not active yet.');
+                }
+
                 $remember = (bool) request('remember');
                 $dataLogin = array(
-                    'email' => request("loginEmail"),
-                    'password' => request("loginPassword")
+                    'username' => request("loginUsername"),
+                    'password' => request("loginPassword"),
+                    'status'   => 1
                 );
-                if(Sentinel::authenticate($dataLogin, $remember)){
+                if ($checkLogin = Sentinel::authenticate($dataLogin, $remember)) {
                     $data['status'] = true;
                 }
             } catch (\Exception $e) {

@@ -7,25 +7,37 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 {
     use ModelTrait;
 
-	public $table = 'backend_users';
+    protected $table = 'backend_users';
+    protected $loginNames = ['username', 'status'];
+    protected $appends = ['roles_name', 'role_id'];
 
-	public static $loginRules	=	array(
-		"loginEmail"	=>	"required",
+    protected $fillable = [
+        'email',
+        'username',
+        'password',
+        'last_name',
+        'first_name',
+        'permissions',
+    ];
+
+
+    public $loginRules	=	array(
+		"loginUsername"	=>	"required",
 		"loginPassword"	=>	"required"
 	);
 
-	public static $loginLangs	=	array(
-		"loginEmail.required"	=>	"Please enter your email",
+	public $loginLangs	=	array(
+		"loginUsername.required"	=>	"Please enter your username",
 		"loginPassword.required"	=>	"Please enter your password"
 	);
 
-	public static $changePasswordRules	=	array(
+	public $changePasswordRules	=	array(
 		"oldPassword"				=>	"required",
 		"newPassword"				=>	"required|confirmed|min:6",
 		"newPassword_confirmation"	=>	"required|min:6"
 	);
 
-	public static $changePasswordLangs	=	array(
+	public $changePasswordLangs	=	array(
 		"oldPassword.required"			=>	"Please enter your current password",
 		"newPassword.required"          =>  "Please enter your new password",
         "newPassword.confirmed"         =>  "New password and password confirmation do not match",
@@ -46,7 +58,7 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
         'Role'         =>  [
             'label'         =>  'Role',
             'type'          =>  'text',
-            'alias'         =>  'role.name'
+            'alias'         =>  'rolesName'
         ],
         'first_name'         =>  [
             'label'         =>  'First name',
@@ -92,31 +104,64 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
             'type'      =>  'select',
             'defaultOption' => [ '1' => "Active", '0' => "Inactive"]
         ],
-        'role_id' => [
+        'roleId' => [
             'label'     => 'Role',
             'type'      =>  'select',
             'data'      =>  'roles',
         ],
     ];
 
-	public function getUpdateRules(){
-		return array(
-			//"username"			=>	"required|min:5",
-			"email"				=>	"required",
-			'password'			=>	"required|min:6"
-		);
-	}
+	public $updateRules = [
+        "username"			=>	"required|min:5",
+        "email"				=>	"required",
+        'password'			=>	"min:6",
+        "roleId"           =>  "required"
+    ];
 
-	public function getUpdateLangs(){
-		return array(
-			"email.required"	=>	trans('validation.email.required'),
-			//"username.min"		=>	trans('validation.username.min'),
-			"password.required"	=>	trans('validation.password.required'),
-			"password.min"		=>	trans('validation.password.min'),
-		);
-	}
+    public $searchFields = [
+        'username'  =>  'Username',
+        'email'  =>  'Email',
+        'first_name'  =>  'First name',
+        'last_name'  =>  'Last name',
+    ];
+
+    public $searchSelects = [
+        'roleId'  =>  [
+            'label' => 'Role',
+            'options' => 'roles'
+        ]
+    ];
+
+    public $updateLangs = [];
 
 
+    /**
+     * get display roles name of a user
+     *
+     * @return string
+     */
+    public function getRolesNameAttribute()
+    {
+        $names = [];
+        $roles = $this->getRoles();
+        foreach ($roles as $role) {
+            $names[] = $role->name;
+        }
+        return implode(', ', $names);
+    }
 
-
+    /**
+     * get role id of user
+     *
+     * @return mixed
+     */
+    public function getRoleIdAttribute()
+    {
+        $roles = $this->getRoles();
+        if (count($roles)) {
+            return $roles->first()->id;
+        } else {
+            return 0;
+        }
+    }
 }

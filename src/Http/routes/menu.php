@@ -1,5 +1,5 @@
 <?php
-Route::group(array('before' => 'basicAuth' ),function(){
+Route::group(array('before' => 'hasAccess' ),function(){
     // Menu
     $module = "Menu";
     $prefixSlug = str_slug($module);

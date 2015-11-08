@@ -1,9 +1,9 @@
 <?php
 Route::group(array('before' => 'hasAccess' ),function(){
     // Menu
-    $module = "User";
+    $module = "Role";
     $prefixSlug = str_slug($module);
-    Route::group(array('prefix' => $prefixSlug ),function() use ($module, $prefixSlug){
+    Route::group(array('prefix' => $prefixSlug ), function() use ($module, $prefixSlug){
         //--index
         Route::get(
             '/',
@@ -90,24 +90,6 @@ Route::group(array('before' => 'hasAccess' ),function(){
                 'before' => 'hasAccess:'.$prefixSlug.'.edit',
                 'as' => $module.'PostNestable',
                 'uses' => $module.'Controller@saveNestableAction'
-            )
-        );
-
-        //-- Change password
-        Route::get(
-            'change-password',
-            array(
-                'before' => 'hasAccess:'.$prefixSlug.'.edit',
-                'as' => $module.'ChangePassword',
-                'uses' =>  $module.'Controller@changePasswordAction'
-            )
-        );
-        Route::post(
-            'change-password',
-            array(
-                'before' => 'hasAccess:'.$prefixSlug.'.edit',
-                'as' => $module.'PostChangePassword',
-                'uses' => $module.'Controller@saveChangePasswordAction'
             )
         );
 

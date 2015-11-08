@@ -1,16 +1,7 @@
 @extends('TrungtnmBackend::layout.backend')
 
 @section('content')
-<div class="page-header">
-    <h1>
-        <i id="moduleIcon" class=""></i>
-        <span>{{ ucfirst($module) }}</span>
-        <small>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            <span>{{ !empty($item->id) ? "Edit ( #". $item->id . " )" : "Create" }}</span>
-        </small>
-    </h1>
-</div>
+@include('TrungtnmBackend::includes.moduleHeader')
 <!-- form start -->
 <form method="post" action="" role="form" class="form-edit form-horizontal pb10" enctype="multipart/form-data">
 {{ csrf_field() }}
@@ -23,6 +14,7 @@
         <label for="{{ $fieldName }}" class="control-label col-sm-2">{{ $options['label'] }}</label>
         <div class="col-sm-10">
             {!! $maker->makeInput($fieldName, $options, !empty( $item->$fieldName) ?  $item->$fieldName : Input::get($fieldName), $data ) !!}
+            {!! $maker->showError(!empty($validate) ? $validate : null, $fieldName) !!}
         </div>
         <div class="clearfix"></div>
     </div>
