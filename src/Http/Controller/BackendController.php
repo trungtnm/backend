@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Sentinel;
 use Trungtnm\Backend\Core\CoreBackendController;
+use Trungtnm\Backend\Model\Module;
+use Trungtnm\Backend\Model\Permission;
 use Trungtnm\Backend\Model\User;
 
 class BackendController extends CoreBackendController

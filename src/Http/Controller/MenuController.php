@@ -7,6 +7,7 @@ use Trungtnm\Backend\Core\BackendControllerInterface;
 use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Menu;
 use Trungtnm\Backend\Model\Module;
+use Trungtnm\Backend\Model\Permission;
 
 class MenuController extends CoreBackendController  implements BackendControllerInterface
 {
@@ -70,26 +71,26 @@ class MenuController extends CoreBackendController  implements BackendController
 
     public function addPermission($roles, $module)
     {
+        $defaultPermissions = Permission::$defaultPermissions;
         foreach ($roles as $role) {
-            $role->addPermission($module. '.read')
-                ->addPermission($module. '.create')
-                ->addPermission($module. '.edit')
-                ->addPermission($module. '.publish')
-                ->addPermission($module. '.delete')
-                ->save();
+            foreach ($defaultPermissions as $permission) {
+                $role = $role->addPermission($module. $permission);
+                Permission::add($permission, $module);
+            }
+            $role->save();
         }
         return true;
     }
 
     public function removePermission($roles, $module)
     {
+        $defaultPermissions = Permission::$defaultPermissions;
         foreach ($roles as $role) {
-            $role->removePermission($module . '.read')
-                ->removePermission($module . '.create')
-                ->removePermission($module . '.edit')
-                ->removePermission($module . '.publish')
-                ->removePermission($module . '.delete')
-                ->save();
+            foreach ($defaultPermissions as $permission) {
+                $role = $role->removePermission($module . $permission);
+                Permission::remove($module, $permission);
+            }
+            $role->save();
         }
         return true;
     }

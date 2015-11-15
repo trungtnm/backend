@@ -1,13 +1,35 @@
 <?php
+namespace Trungtnm\Backend\Model;
 
-class Permission extends MyModel {
 
-	protected $table = 'backend_users_permissions';
-	protected $fillable = array('name', 'slug', 'module_id', 'action', 'status');
+use Trungtnm\Backend\Core\AbstractModel;
+use Trungtnm\Backend\Core\ModelTrait;
 
-	public function module()
+class Permission extends AbstractModel
+{
+    use ModelTrait;
+
+    public static $defaultPermissions = [
+        '.create', '.edit', '.read', '.publish', '.delete'
+    ];
+
+    protected $table = "permissions";
+
+    public function scopeAdd($query, $module, $permission)
     {
-        return $this->belongsTo('Modules');
+        $data = [
+            'module' => $module,
+            'permission' => $permission
+        ];
+        return $query->insert($data);
     }
 
+    public function scopeRemove($query, $module, $permission)
+    {
+        $query->where([
+            'module' => $module,
+            'permission' => $permission
+        ]);
+        return $query->delete();
+    }
 }

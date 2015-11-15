@@ -3,8 +3,11 @@ namespace Trungtnm\Backend\Http\Controller;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
+use Sentinel;
 use Trungtnm\Backend\Core\BackendControllerInterface;
 use Trungtnm\Backend\Core\CoreBackendController;
+use Trungtnm\Backend\Model\Module;
+use Trungtnm\Backend\Model\Permission;
 use Trungtnm\Backend\Model\Role;
 
 class RoleController extends CoreBackendController implements BackendControllerInterface
@@ -22,48 +25,37 @@ class RoleController extends CoreBackendController implements BackendControllerI
             'id'    =>  $id,
             'name'  => request('name'),
             'slug'  => request('slug'),
+            'permissions' => request('permissions', [])
         ];
     }
 
-	function showPermission( $id ){
+    public function getEditData()
+    {
+        $this->getPermissions();
+        $this->data['customView'] = view('TrungtnmBackend::role.permission', $this->data)->render();
+    }
 
-		$this->data['status'] = (Session::has("status")) ? Session::get("status") : FALSE ;
-		$this->data['message'] = (Session::has("message")) ? Session::get("message") : "" ;
-		$this->data['id'] = $id;
-
-		
+	function getPermissions()
+    {
 		// GET ALL PERMISSION
 		$permissions = Permission::all()->toArray();
 		$permissionMap = array();
-
 		// GET ALL MODULE
-		$moduleData = Modules::all()->toArray();
+		$moduleData = Module::all()->toArray();
 		if( !empty($permissions) ){
 			foreach( $permissions as $permission ){
-				$permissionMap[$permission['module_id']][] = $permission;
+				$permissionMap[$permission['module']][] = $permission;
 			}
 		}
-
 		if( !empty($moduleData) ){
 			$moduleData = array_column($moduleData, 'name', 'id');
 		}
-
-		// GET USER PERMISSION
-		$groupPermissions = Sentry::findGroupById($id)->getPermissions();
+		// get role permission
+		$rolePermissions = $this->data['id'] ? $this->data['item']->permissions : [];
 		$this->data['permissionMap'] 	= $permissionMap;
 		$this->data['moduleData']		= $moduleData;
-		$this->data['groupPermissions']	= $groupPermissions;
-
-		if (Request::isMethod('post'))
-		{
-			$this->postPermission($id, $this->data);
-			if( $this->data['status'] === TRUE ){
-				return Redirect::to($this->moduleURL.'permission/'.$this->data['id']);
-			}
-		}
-
-		$this->layout->content 			= View::make('showPermission', $this->data);
-
+		$this->data['rolePermissions']	= $rolePermissions;
+        return true;
 	}
 
 	function postPermission( $id, &$data ){

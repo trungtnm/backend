@@ -14,6 +14,7 @@
     <span style="font-size: 24px;padding-left:15px;line-height:30px;" id="add_icon" class=""></span>
     <input type="hidden" name="icon" id="icon" value="{{ $item->icon or "fa fa-file" }}">
 </div>
+
 <script type="text/javascript">
     $( document ).ready(function() {
         $('#icon-table a').click(function() {
@@ -21,7 +22,6 @@
             $('#icon').val(icon);
             $('#icon-preview i').prop('class',icon);
         });
-
         $('#icon-table a').prop('href', "javascript:;");
     });
 </script>

@@ -17,11 +17,11 @@ class Role extends \Cartalyst\Sentinel\Roles\EloquentRole
 
     public $showFields = [
         'name'         =>  [
-            'label'         =>  'Module name',
+            'label'         =>  'Role name',
             'type'          =>  'text'
         ],
         'slug'         =>  [
-            'label'         =>  'Module slug',
+            'label'         =>  'Role slug',
             'type'          =>  'text'
         ],
         'created_at'    =>  [
@@ -32,11 +32,11 @@ class Role extends \Cartalyst\Sentinel\Roles\EloquentRole
 
     public $dataFields = [
         'name'         =>  [
-            'label'         =>  'Module name',
+            'label'         =>  'Role name',
             'type'          =>  'text'
         ],
         'slug'         =>  [
-            'label'         =>  'Module slug',
+            'label'         =>  'Role slug',
             'type'          =>  'text'
         ]
     ];

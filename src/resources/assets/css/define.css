@@ -195,3 +195,16 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 .form-horizontal textarea.form-control{
   min-height: 100px
 }
+#accordion.panel-group{
+    margin-top: 20px;
+}
+.panel-group .panel{
+    margin-top: 5px;
+}
+.permission-label .permission-checkbox{
+    position: relative;
+    margin-left: 0;
+}
+.permission-label{
+    display: block;
+}
