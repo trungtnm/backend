@@ -2,68 +2,68 @@
 namespace Trungtnm\Backend\Core;
 
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use Trungtnm\Backend\Model\Module;
+use Sentinel;
+use Trungtnm\Backend\Model\Menu;
 use Trungtnm\Backend\Utility\HtmlMaker;
 
 class CoreBackendController extends BaseController {
 
-    protected $module        = null;
-
-    public $layout        = 'layout.backend';
     protected $data          = [];
     protected $updateData    = [];
 	protected $model         = null;
-	protected $moduleURL     = null;
-	protected $moduleName    = null;
 	protected $defaultField  = 'updated_at';
 	protected $defaultOrder  = 'desc';
 	protected $uploadFields  = [];
 	protected $showAddButton = true;
 	protected $searchSelects = [];
 	protected $searchFields = [];
-
 	protected $seo = false;
-
 	protected $dataFields = [];
-
 	protected $UpdateRules = [];
-
 	protected $UpdateLang = [];
 
     public function init()
     {
         View::share('assetURL', asset('vendor/trungtnm/backend') . "/");
-
-        // get url of module
-        $module = Module::where('slug', strtolower($this->module))->first();
-        if(!empty($module))
-            $this->moduleName = $module->moduleName;
-        $this->data['moduleName'] = $this->moduleName;
-        $this->data['module'] = $this->module;
-        $this->data['model'] = $this->model;
-        $this->data['maker'] = new HtmlMaker();
+        $this->data['backendUrl'] = url(config('trungtnm.backend.uri')) . "/";
+        if (Sentinel::check()) {
+            $this->data['menus'] = $this->getMenu();
+            // get url of module
+            $module = strtolower(request()->segment(2));
+            $menu = Menu::where([
+                'slug' => $module,
+                'status' => 1
+            ])->first();
+            if ($menu) {
+                $this->data['module'] = ucfirst($menu->module);
+                $this->data['defaultURL'] = $menu->slug;
+            } elseif ($module != "access-denied") {
+                return Redirect::route('accessDenied');
+            }
+            $this->data['model'] = $this->model;
+            $this->data['maker'] = new HtmlMaker();
+        }
     }
 
 	public function redirectAfterSave($type, $message = null, $status = null )
     {
 		switch ($type) {
 			case 'save-return':
-				return Redirect::route($this->module. "Index");
+				return Redirect::route($this->data['module']. "Index");
 				break;
 
 			case 'save-new':
-				return Redirect::route($this->module.'Create');
+				return Redirect::route($this->data['module'].'Create');
 				break;
 
 			case 'save':
 				return Redirect::route(
-                        $this->module.'Update',
+                        $this->data['module'].'Update',
                         $this->data['id']
                     )->with(
                         ['message' => $message]
@@ -71,7 +71,7 @@ class CoreBackendController extends BaseController {
 				break;
 			
 			default:
-				return Redirect::route($this->module.'Index');
+				return Redirect::route($this->data['module'].'Index');
 				break;
 		}
 	}
@@ -80,7 +80,6 @@ class CoreBackendController extends BaseController {
 	public function indexAction(){
 		$this->data['defaultField']  = $this->defaultField;
 		$this->data['defaultOrder']  = $this->defaultOrder;
-		$this->data['defaultURL']    = $this->moduleURL;
 		$this->data['showAddButton'] = $this->showAddButton;
 		$this->data['searchFields']  = $this->model->searchFields;
 		$this->data['searchSelects'] = $this->model->searchSelects;
@@ -100,7 +99,6 @@ class CoreBackendController extends BaseController {
         $showNumber 	= request('showNumber');
         $this->data['defaultField'] = $defaultField;
         $this->data['defaultOrder'] = $defaultOrder;
-        $this->data['defaultURL'] 	= $this->moduleURL;
         $this->data['showFields'] 	= $this->model->showFields;
 
 
@@ -121,7 +119,7 @@ class CoreBackendController extends BaseController {
 			if( $item ){
 				$this->data['item'] = $item;
 			}else{
-				return Redirect::route($this->module.'Index');
+				return Redirect::route($this->data['module'].'Index');
 			}
 		}
 
@@ -140,6 +138,32 @@ class CoreBackendController extends BaseController {
 		return view('TrungtnmBackend::general.edit', $this->data);
 
 	}
+
+    /**
+     * get menus with permission read of user
+     *
+     * @return array
+     */
+    public function getMenu(){
+        $listMenusTMP 	= Menu::getList();
+        $listMenus 		= array();
+        if( !empty($listMenusTMP) ){
+            foreach( $listMenusTMP as $menu ){
+                if (Sentinel::hasAccess($menu->module . ".*")) {
+                    if( $menu->parent_id == 0 ){
+                        $listMenus[$menu->id] = $menu;
+                    }
+                    else{
+                        if(!empty($listMenus[$menu->parent_id])){
+                            $listMenus[$menu->parent_id]['children'][] = $menu;
+                        }
+                    }
+                }
+            }
+        }
+        return $listMenus;
+    }
+
 	/**
 	 * add 2 seo_keyword and seo_description to dataFields if seo enable
 	 */

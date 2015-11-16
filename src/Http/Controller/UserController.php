@@ -15,8 +15,6 @@ class UserController extends CoreBackendController implements BackendControllerI
 
     protected $data = [];
 
-    protected $module = 'User';
-
     public function __construct(User $model) {
         //TODO: install for 1st times run this package
         $this->model = $model;

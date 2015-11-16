@@ -48,10 +48,10 @@ class Menu extends AbstractModel
             'type'      =>  'select',
             'defaultOption' => [ '1' => "Active", '0' => "Inactive"]
         ],
-        'module_id' => [
+        'module' => [
             'label'     => 'Module',
             'type'      =>  'select',
-            'data'      =>  'modules',
+            'data'      =>  'modules'
         ],
         'parent_id' => [
             'label'     => 'Parent menu',
@@ -94,7 +94,6 @@ class Menu extends AbstractModel
 	public function scopeGetList($query)
     {
 		return $query->where('status', 1)
-            ->where('module_id', '>', 0)
             ->orderBy('parent_id', 'asc')
             ->orderBy('order', 'asc')
             ->get();

@@ -13,7 +13,6 @@ use Trungtnm\Backend\Model\User;
 
 class BackendController extends CoreBackendController
 {
-    protected $module = "backend";
     public function __construct()
     {
         $this->init();
@@ -21,7 +20,7 @@ class BackendController extends CoreBackendController
 
     public function indexAction()
     {
-        return view('TrungtnmBackend::index');
+        return view('TrungtnmBackend::index', $this->data);
     }
 
     public function loginAction()
@@ -104,7 +103,7 @@ class BackendController extends CoreBackendController
      */
     public function accessDeniedAction()
     {
-        return view('TrungtnmBackend::denied');
+        return view('TrungtnmBackend::denied', $this->data);
     }
 
 }

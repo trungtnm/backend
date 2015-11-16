@@ -1,8 +1,3 @@
-<?php
-    $menus = App::make('Trungtnm\Backend\Http\Controller\MenuController')->getMenu();
-    $backendUrl = url(config('trungtnm.backend.uri')) . "/";
-$module = request()->segment(2);
-?>
 <div id="sidebar" class="sidebar responsive">
 <script type="text/javascript">
     try {
@@ -50,7 +45,6 @@ $module = request()->segment(2);
 <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
     <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 </div>
-
 <script type="text/javascript">
     try {
         ace.settings.check('sidebar', 'collapsed')

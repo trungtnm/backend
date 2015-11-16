@@ -9,19 +9,20 @@
     <div class="col-sm-12">
         <div class="panel-group" id="accordion">
             <?php $stt = 0; ?>
-            @foreach( $moduleData as $moduleID => $nameModule)
+            @foreach( $moduleData as $moduleName)
                 <div class="panel panel-default modulePanel pull-left">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a style="display: block" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ ++$stt }}">
-                                {{ $nameModule }}
+                                {{ ucfirst($moduleName) }}
                             </a>
                         </h4>
                     </div>
                     <div id="collapse-{{ $stt }}" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="form-group">
-                                @foreach ($permissionMap[strtolower($nameModule)] as $permission)
+                                @if (isset($permissionMap[strtolower($moduleName)]))
+                                @foreach ($permissionMap[strtolower($moduleName)] as $permission)
                                     <div class="checkbox">
                                         <label class="permission-label">
                                             <?php
@@ -32,12 +33,13 @@
                                             ?>
                                             <input class="permission-checkbox" type="checkbox"
                                                    name="permissions[{!! $perm !!}]"
-                                                   value="true"
+                                                   value="1"
                                                    {!! $checked !!}>
                                             {{ ucfirst(trim($permission['permission'], '.')) }}
                                         </label>
                                     </div>
                                 @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>

@@ -2,18 +2,16 @@
 namespace Trungtnm\Backend\Http\Controller;
 
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Request;
 use Sentinel;
 use Trungtnm\Backend\Core\BackendControllerInterface;
 use Trungtnm\Backend\Core\CoreBackendController;
+use Trungtnm\Backend\Model\Menu;
 use Trungtnm\Backend\Model\Module;
 use Trungtnm\Backend\Model\Permission;
 use Trungtnm\Backend\Model\Role;
 
 class RoleController extends CoreBackendController implements BackendControllerInterface
 {
-    protected $module = "Role";
-
 	public function __construct(Role $model) {
         $this->model = $model;
         $this->init();
@@ -41,14 +39,14 @@ class RoleController extends CoreBackendController implements BackendControllerI
 		$permissions = Permission::all()->toArray();
 		$permissionMap = array();
 		// GET ALL MODULE
-		$moduleData = Module::all()->toArray();
+		$moduleData = Menu::all()->toArray();
 		if( !empty($permissions) ){
 			foreach( $permissions as $permission ){
 				$permissionMap[$permission['module']][] = $permission;
 			}
 		}
 		if( !empty($moduleData) ){
-			$moduleData = array_column($moduleData, 'name', 'id');
+			$moduleData = array_column($moduleData, 'module', 'module');
 		}
 		// get role permission
 		$rolePermissions = $this->data['id'] ? $this->data['item']->permissions : [];
@@ -56,27 +54,6 @@ class RoleController extends CoreBackendController implements BackendControllerI
 		$this->data['moduleData']		= $moduleData;
 		$this->data['rolePermissions']	= $rolePermissions;
         return true;
-	}
-
-	function postPermission( $id, &$data ){
-
-		if( $groupData = Sentry::findGroupById($id) ){
-
-			$allData = Input::all();
-			if( isset( $allData['_token'] ) ){
-				unset( $allData['_token'] );
-			}
-			$groupData->permissions = $allData;
-			
-			if($groupData->save()){
-				$data['status'] 	= TRUE;
-				$data['message'] 	= "Sửa quyền truy cập thành công";
-				foreach ($groupData->users as $k => $user) {
-					DB::table($user->table)->where('id', $user->id)->update(array('permissions' => json_encode($groupData->permissions)));
-				}
-			}
-		}
-
 	}
 
 	/*----------------------------- END CREATE & UPDATE --------------------------------*/
