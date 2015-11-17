@@ -71,7 +71,7 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
         $userControllerNamespace = config('trungtnm.backend.modules_controller_namespace');
         $userRouteFolder = config('trungtnm.backend.modules_route_path');
         if(!empty($userControllerNamespace) && !empty($userRouteFolder)){
-//            $this->addRoutes($userControllerNamespace, $userRouteFolder);
+            $this->addRoutes($userControllerNamespace, $userRouteFolder);
         }
     }
 
