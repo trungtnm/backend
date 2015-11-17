@@ -14,18 +14,12 @@ use Trungtnm\Backend\Utility\HtmlMaker;
 class CoreBackendController extends BaseController {
 
     protected $data          = [];
-    protected $updateData    = [];
 	protected $model         = null;
 	protected $defaultField  = 'updated_at';
 	protected $defaultOrder  = 'desc';
-	protected $uploadFields  = [];
 	protected $showAddButton = true;
 	protected $searchSelects = [];
 	protected $searchFields = [];
-	protected $seo = false;
-	protected $dataFields = [];
-	protected $UpdateRules = [];
-	protected $UpdateLang = [];
 
     public function init()
     {
@@ -135,6 +129,10 @@ class CoreBackendController extends BaseController {
 		//get additional data for page update
 		$this->getEditData();
 
+        if ($this->model->seo) {
+            $this->addSeo();
+        }
+
 		return view('TrungtnmBackend::general.edit', $this->data);
 
 	}
@@ -167,7 +165,7 @@ class CoreBackendController extends BaseController {
 	/**
 	 * add 2 seo_keyword and seo_description to dataFields if seo enable
 	 */
-	public function addSeoFieldsAction() {
+	public function addSeo() {
 		$this->data['dataFields']['seo_keyword'] = [
 			'label' =>  'SEO Keyword',
 	        'type'  =>  'textarea',
@@ -211,7 +209,7 @@ class CoreBackendController extends BaseController {
 			//additional SEO fields
 			$this->handleSeo();
 			// File Upload
-            $this->handleFileUpload();
+            $this->handleFileUpload($id);
 			// End file Upload
 			$item = $this->fillData();
 
@@ -260,8 +258,8 @@ class CoreBackendController extends BaseController {
                 $this->afterSave($item, true);
                 $item->renewCache();
                 // TO DO : move to config
-                if(is_array($this->uploadFields)){
-                    foreach ($this->uploadFields as $field => $info) {
+                if(is_array($this->model->uploadFields)){
+                    foreach ($this->model->uploadFields as $field => $info) {
                         if(!empty($item->$field)){
                             unlink($item->$field);
                         }
@@ -278,7 +276,7 @@ class CoreBackendController extends BaseController {
      */
     public function handleSeo()
     {
-        if($this->seo){
+        if($this->model->seo){
             $this->updateData['seo_description'] = request('seo_description');
             $this->updateData['seo_keyword']     = request('seo_keyword');
         }
@@ -287,13 +285,13 @@ class CoreBackendController extends BaseController {
     /**
      * handle file uploads
      */
-    public function handleFileUpload()
+    public function handleFileUpload($id = 0)
     {
-        if(!is_array($this->uploadFields)) {
+        if(!is_array($this->model->uploadFields)) {
             return;
         }
 
-        foreach ($this->uploadFields as $field) {
+        foreach ($this->model->uploadFields as $field) {
             if(request('inputURL_'. $field)){
                 $this->updateData[$field] = request($field);
             }

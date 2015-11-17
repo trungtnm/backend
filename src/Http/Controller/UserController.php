@@ -13,8 +13,6 @@ use Trungtnm\Backend\Model\User;
 class UserController extends CoreBackendController implements BackendControllerInterface
 {
 
-    protected $data = [];
-
     public function __construct(User $model) {
         //TODO: install for 1st times run this package
         $this->model = $model;

@@ -50,8 +50,7 @@ class Menu extends AbstractModel
         ],
         'module' => [
             'label'     => 'Module',
-            'type'      =>  'select',
-            'data'      =>  'modules'
+            'type'      =>  'text'
         ],
         'parent_id' => [
             'label'     => 'Parent menu',

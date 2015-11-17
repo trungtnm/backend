@@ -55,15 +55,14 @@ class MenuController extends CoreBackendController  implements BackendController
      */
     public function afterSave($item, $isDelete = false)
     {
-        $module = strtolower($item->module->name);
         $adminRoles = [
             Sentinel::findRoleById(1), // role ROOT
             Sentinel::findRoleById(2)  // role Admin
         ];
         if (!$isDelete) {
-            $this->addPermission($adminRoles, $module);
+            $this->addPermission($adminRoles, $item->module);
         } else {
-            $this->removePermission($adminRoles, $module);
+            $this->removePermission($adminRoles, $item->module);
         }
     }
 
