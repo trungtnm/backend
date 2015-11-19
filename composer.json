@@ -7,10 +7,16 @@
             "email": "trungtran07@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
+      "php": ">=5.4.0",
       "anchu/ftp": "~2.0",
       "cartalyst/sentinel": "2.0.*",
       "intervention/image": "2.*"
-    }
+    },
+    "autoload": {
+      "psr-0": {
+        "Anchu\\Ftp\\": "src/"
+      }
+    },
+    "minimum-stability": "dev"
 }
