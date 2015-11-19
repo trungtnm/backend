@@ -1,6 +1,9 @@
 {
     "name": "trungtnm/backend",
     "description": "A backend package boost up your Laravel 5.1 backend development",
+    "keywords": ["laravel","backend","admin"],
+    "homepage": "https://github.com/trungtnm/backend",
+    "license": "MIT",
     "authors": [
         {
             "name": "Trung Tran",
@@ -14,8 +17,8 @@
       "intervention/image": "2.*"
     },
     "autoload": {
-      "psr-0": {
-        "Anchu\\Ftp\\": "src/"
+      "psr-4": {
+        "Trungtnm\\Backend\\": "src/"
       }
     },
     "minimum-stability": "dev"
