@@ -11,6 +11,6 @@
     "require": {
       "anchu/ftp": "~2.0",
       "cartalyst/sentinel": "2.0.*",
-      "intervention/image": "2.*",
+      "intervention/image": "2.*"
     }
 }
