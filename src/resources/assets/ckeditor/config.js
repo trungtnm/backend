@@ -60,10 +60,10 @@ CKEDITOR.editorConfig = function( config ) {
 
     ];
 
-        config.filebrowserBrowseUrl = base_url + 'backend/theme/default/assets/ckfinder/ckfinder.html';
-        config.filebrowserImageBrowseUrl = base_url + 'backend/theme/default/assets/ckfinder/ckfinder.html?type=Images';
-        config.filebrowserUploadUrl = base_url + 'backend/theme/default/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-        config.filebrowserImageUploadUrl = base_url + 'backend/theme/default/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+        config.filebrowserBrowseUrl = base_url + '/ckfinder/ckfinder.html';
+        config.filebrowserImageBrowseUrl = base_url + '/ckfinder/ckfinder.html?type=Images';
+        config.filebrowserUploadUrl = base_url + '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+        config.filebrowserImageUploadUrl = base_url + '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
 
     config.enterMode = CKEDITOR.ENTER_BR;
     config.autoParagraph = false;

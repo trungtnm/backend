@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Intervention\Image\Facades\Image;
 use Sentinel;
 use Trungtnm\Backend\Model\Menu;
+use Trungtnm\Backend\Utility\FtpUtil;
 use Trungtnm\Backend\Utility\HtmlMaker;
 
-class CoreBackendController extends BaseController {
+class CoreBackendController extends BaseController
+{
 
     protected $data          = [];
 	protected $model         = null;
@@ -253,15 +256,14 @@ class CoreBackendController extends BaseController {
         $id 	= request('id');
         $item 	= $this->model->find($id);
         if( $item ){
-
             if($item->delete()){
                 $this->afterSave($item, true);
                 $item->renewCache();
                 // TO DO : move to config
                 if(is_array($this->model->uploadFields)){
-                    foreach ($this->model->uploadFields as $field => $info) {
+                    foreach ($this->model->uploadFields as $field) {
                         if(!empty($item->$field)){
-                            unlink($item->$field);
+                            @unlink($item->$field);
                         }
                     }
                 }
@@ -297,11 +299,14 @@ class CoreBackendController extends BaseController {
             }
             else{
                 if(Input::hasFile($field)){
-                    $this->updateData[$field] = uploadImage($field, $this->dirUpload);
+                    $this->updateData[$field] = $this->uploadImage($field, $this->model->dirUpload);
                 }
             }
             if($id > 0){
                 //update - delete old file
+                if (!empty($this->data['item']->$field) && $this->data['item']->$field != $this->updateData[$field]) {
+                    @unlink($this->data['item']->$field);
+                }
             }
         }
     }
@@ -340,4 +345,62 @@ class CoreBackendController extends BaseController {
 
     }
 
+    public function uploadImage($name, $dirUpload, $width = 0, $height = 0){
+        if(Input::hasFile($name)){
+            $dirUpload = $dirUpload ? trim($dirUpload, '/') . "/" : config('trungtnm.backend.uploadFolder');
+            $input         = Input::file($name);
+            $realPath      = $input->getRealPath();
+
+            if($width != 0 && $height != 0 ){
+                $uploadFile    = Image::make($input)->resize($width, $height)->save($realPath);
+            }
+            $filename = $input->getClientOriginalName();
+            $nameArr  = explode('.', $filename);
+            $extension = is_array($nameArr) && count($nameArr) > 1 ? end($nameArr) : '';
+            if($extension){
+                array_pop($nameArr);
+                $filename = implode('.', $nameArr);
+            }
+
+            $imgName       = str_slug($filename) . "-" . time() . "." . strtolower($extension);
+            $uploadSuccess = $input->move($dirUpload, $imgName);
+            $imagePath     = $dirUpload. $imgName;
+            if( $uploadSuccess ){
+                return $imagePath;//.'.'.$fileExtension;
+            }else{
+                return FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function uploadFTP($name, $dirUpload, $connection = ''){
+        if(Input::hasFile($name)){
+            $dirUpload = $dirUpload ? "/" . trim($dirUpload, '/') . "/" : config('trungtnm.backend.uploadFolder');
+            $input         = Input::file($name);
+            $originalFileName = $input->getClientOriginalName();
+            $nameArr  = explode('.', $originalFileName);
+            $extension = is_array($nameArr) && count($nameArr) > 1 ? end($nameArr) : '';
+            if($extension){
+                array_pop($nameArr);
+                $fileName = implode('.', $nameArr);
+            }
+            $imgName = str_slug($fileName) . "-" . time() . "." . strtolower($extension);
+
+//            $uploadSuccess = (new FtpUtil())->uploadFtp($dirUpload, $originalFileName, $imgName);
+            $uploadSuccess = true;
+            if( $uploadSuccess ){
+                $connection = !$connection ? config('ftp::default') : $connection;
+                $FtpConnectionsConfigs = config('ftp::connections');
+                $FtpConfigs = $FtpConnectionsConfigs[$connection];
+                $remotePath = $FtpConfigs['basic_url'] . "/" . trim($dirUpload, "/") . "/" . $imgName;
+                return $remotePath;
+            }else{
+                return FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+    }
 }

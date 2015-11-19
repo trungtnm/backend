@@ -1,8 +1,10 @@
 <?php
 namespace Trungtnm\Backend\Utility;
 
+use Anchu\Ftp\Facades\Ftp;
 
-class MyFTP{
+class FtpUtil
+{
 	const FILE_READ_MODE  = 0644;
 	const FILE_WRITE_MODE = 0666;
 	const DIR_READ_MODE   = 0755;
