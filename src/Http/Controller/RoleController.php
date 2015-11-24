@@ -19,11 +19,16 @@ class RoleController extends CoreBackendController implements BackendControllerI
 
     public function processData($id = 0)
     {
+        // cast type
+        $permissions = request('permissions', []);
+        foreach ($permissions as $key => $permission) {
+            $permissions[$key] = (bool) $permission;
+        }
         $this->updateData = [
             'id'    =>  $id,
             'name'  => request('name'),
             'slug'  => request('slug'),
-            'permissions' => request('permissions', [])
+            'permissions' => $permissions
         ];
     }
 

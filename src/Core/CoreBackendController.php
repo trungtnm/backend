@@ -36,6 +36,7 @@ class CoreBackendController extends BaseController
                 'slug' => $module,
                 'status' => 1
             ])->first();
+            $this->data['module'] = 'backend';
             if ($menu) {
                 $this->data['module'] = ucfirst($menu->module);
                 $this->data['defaultURL'] = $menu->slug;

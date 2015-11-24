@@ -9,6 +9,7 @@ use Sentinel;
 use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Module;
 use Trungtnm\Backend\Model\Permission;
+use Trungtnm\Backend\Model\Role;
 use Trungtnm\Backend\Model\User;
 
 class BackendController extends CoreBackendController
@@ -27,7 +28,7 @@ class BackendController extends CoreBackendController
     {
         $this->layout = null;
 
-        if (Sentinel::check()) {
+        if (Sentinel::check() && (Sentinel::getUser()->inRole(Role::ROOT) || Sentinel::getUser()->inRole(Role::ADMIN)) ) {
             return Redirect::route('indexDashboard');
         }
 
@@ -56,12 +57,15 @@ class BackendController extends CoreBackendController
         if ($validate->passes()) {
             try {
                 $user = User::where([
-                    'username' => request('loginUsername'),
-                    'status'   => 1
-                ])
-                ->first();
+                        'username' => request('loginUsername'),
+                        'status'   => 1,
+                    ])
+                    ->first();
                 if (!$user) {
                     throw new \Exception('This user has been not active yet.');
+                }
+                if (!$user->inRole(Role::ROOT) && !$user->inRole(Role::ADMIN)) {
+                    throw new \Exception('Account is not exists');
                 }
 
                 $remember = (bool) request('remember');
