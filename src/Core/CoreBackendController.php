@@ -17,6 +17,7 @@ class CoreBackendController extends BaseController
 {
 
     protected $data          = [];
+    protected $updateData    = [];
 	protected $model         = null;
 	protected $defaultField  = 'updated_at';
 	protected $defaultOrder  = 'desc';
