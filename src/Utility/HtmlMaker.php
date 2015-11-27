@@ -101,7 +101,7 @@ class HtmlMaker{
 	 */
 	public function date(){
 		if(!empty($this->value)){
-			return "<td>".$this->value->format('H:i d-m-Y')."</td>";
+			return "<td>".$this->value."</td>";
 		}
 		else{
 			return "<td></td>";
