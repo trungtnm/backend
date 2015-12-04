@@ -72,7 +72,7 @@ class MenuController extends CoreBackendController  implements BackendController
         foreach ($roles as $role) {
             foreach ($defaultPermissions as $permission) {
                 $role = $role->addPermission($module. $permission);
-                Permission::add($permission, $module);
+                Permission::add($module, $permission);
             }
             $role->save();
         }

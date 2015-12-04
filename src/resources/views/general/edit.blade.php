@@ -7,10 +7,18 @@
 {{ csrf_field() }}
 @if(!empty($dataFields))
     @foreach ($dataFields as $fieldName => $options)
+        @if(!empty($options['onUpdate']) && empty($id) )
+            <?php continue; ?>
+        @endif
     <?php 
     $data = !empty($options['data']) ? ${$options['data']} : [];
-    $valueField = !empty($options['alias']) ? $options['alias'] : $fieldName;
-    $value = !empty( $item->$valueField) ?  $item->$valueField : Input::get($valueField)
+    if (!empty($item)) {
+        $value = !empty($options['alias']) ? $maker->aliasFieldValue($options['alias'], $item) :
+                $item->{$fieldName};
+    } else {
+        $value = null;
+    }
+
     ?>
     <div class="row-fluid">
         <label for="{{ $fieldName }}" class="control-label col-sm-2">{{ $options['label'] }}</label>

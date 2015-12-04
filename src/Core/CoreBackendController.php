@@ -301,16 +301,31 @@ class CoreBackendController extends BaseController
             }
             else{
                 if(Input::hasFile($field)){
-                    $this->updateData[$field] = $this->uploadImage($field, $this->model->dirUpload);
+                    $uploadFolder = $this->detectUploadFolder($field);
+                    $this->updateData[$field] = $this->uploadImage($field, $uploadFolder);
                 }
             }
-            if($id > 0){
+            if($id > 0 && !empty($this->updateData[$field])){
                 //update - delete old file
                 if (!empty($this->data['item']->$field) && $this->data['item']->$field != $this->updateData[$field]) {
                     @unlink($this->data['item']->$field);
                 }
             }
         }
+    }
+
+    private function detectUploadFolder ($field)
+    {
+        if (is_array($this->model->dirUpload)) {
+            if (array_key_exists($field, $this->model->dirUpload)) {
+                $uploadFolder = $this->model->dirUpload[$field];
+            } else {
+                $uploadFolder = "";
+            }
+        } else {
+            $uploadFolder = $this->model->dirUpload;
+        }
+        return $uploadFolder;
     }
 
     /**

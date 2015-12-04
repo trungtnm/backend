@@ -36,22 +36,14 @@ class HtmlMaker{
 	 *     @param string $id  	id of content  
 	 *     @param string $value value of content
 	 */
-	public static function make($object, $field, $info){
+	public function make($object, $field, $info){
 		if ( !empty($field) && ( $field == 'icon') ) {
 			$value_icon = ( isset($info['alias']) ) ? $object->{$info['alias']} : $object->{$field};
 			$value = '<span class="'.$value_icon.' fa-lg"></span>';
 		}else{
-			//relational attribute
-			if(!empty($info['alias'])){
-				if(strpos($info['alias'], '.') !== FALSE){
-					$tmp = explode('.', $info['alias']);
-					$value = !empty($object->{$tmp[0]}->{$tmp[1]}) ? $object->{$tmp[0]}->{$tmp[1]} : '';
-				}
-				else{
-					$value = $object->{$info['alias']};
-				}
-			}
-			else{
+			if(!empty($info['alias'])) {
+				$value = $this->aliasFieldValue($info['alias'], $object);
+			} else {
 				$value = $object->{$field};
 			}
 		}
@@ -65,6 +57,25 @@ class HtmlMaker{
 		
 		return $obj->render();
 
+	}
+
+	/**
+	 * @param $alias
+	 * @param $object
+	 * @return string
+	 */
+	public function aliasFieldValue($alias, $object)
+	{
+		//relational attribute
+		if(strpos($alias, '.') !== FALSE){
+			$tmp = explode('.', $alias);
+			$value = !empty($object->{$tmp[0]}->{$tmp[1]}) ? $object->{$tmp[0]}->{$tmp[1]} : '';
+		}
+		else{
+			$value = $object->{$alias};
+		}
+
+		return $value;
 	}
 
 	public function init($id, $field, $value, $info){
@@ -92,7 +103,7 @@ class HtmlMaker{
 	}
 
 	public function link(){
-		return '<td><a target="_blank" href="'.$this->value.'">'. Str::limit($this->value, 20) .'</a></td>';
+		return '<td><a target="_blank" href="'.url($this->value).'">'. str_limit(explode_end('/', $this->value), 20) .'</a></td>';
 	}
 
 	/**
