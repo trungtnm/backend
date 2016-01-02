@@ -60,8 +60,7 @@ $(document).ready(function(){
             step : 15
         });
     }
-
-    //reorder hidden fields
+        //reorder hidden fields
     var customFields = $('#preHiddenFields .row-fluid');
     if(customFields.length){
         var configuredFields = $('.form-edit .row-fluid').length - customFields.length;

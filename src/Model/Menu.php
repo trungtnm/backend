@@ -70,13 +70,6 @@ class Menu extends AbstractModel
         'name' 		=> 'required'
     ];
 
-    /**
-     * @return \Trungtnm\Backend\Model\Module
-     */
-	public function module()
-    {
-		return $this->belongsTo('\Trungtnm\Backend\Model\Module');
-	}
 
     /**
      * @return \Trungtnm\Backend\Model\Menu
@@ -97,4 +90,9 @@ class Menu extends AbstractModel
             ->orderBy('order', 'asc')
             ->get();
 	}
+
+    public function scopeRelation($query){
+        $query->with('parent');
+        return $query;
+    }
 }

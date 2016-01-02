@@ -7,7 +7,7 @@ var pagination = {
         button          : ".wrap-table .pagination a",
         searchField     : "#searchField",
         filterField     : "#filterField",
-        showNumberField : "#showNumberField",        
+        showNumberField : "#showNumberField",
         //showNumberField1 : "#showNumberField1",
         searchForm      : "#filter-form",
         buttonFilter    : ".btn-filter-sm",
@@ -48,8 +48,8 @@ var pagination = {
             that.filterSubmit();
         });
         /*this.property.showNumberField1.change(function(){
-            that.changeShow($(this).val());
-        })*/
+         that.changeShow($(this).val());
+         })*/
     },
     changeShow : function(number){
         this.property.showNumber = number;
@@ -89,7 +89,7 @@ var pagination = {
                 that.property.oldFilterBy = that.property.filterBy;
                 that.property.oldShowNumber = that.property.showNumber;
                 that.afterResult();
-               
+
             }
         )
     },
@@ -102,10 +102,12 @@ var pagination = {
             // that.property.url = href;
             that.filterSubmit(href);
         });
-        
-        $('.showNumberField').change(function(e){                    
+
+        $('.showNumberField').change(function(e){
             that.changeShow($(this).val());
         });
+
+        setEditable();
         hideLoading();
     },
     getResult :   function (){
@@ -194,5 +196,40 @@ function hideLoading(){
     $("#modalLoading").modal("hide");
 }
 
-
-
+function setEditable(){
+    //xeditable for simple options
+    var xeditable = $('.xeditable');
+    if (xeditable.length) {
+        var $opts = {
+            ajaxOptions: {
+                dataType: 'json'
+            },
+            success: function(data, config) {
+                if(data && data.id) {  //record created, response like {"id": 2}
+                    //set pk
+                    $(this).editable('option', 'pk', data.id);
+                    //remove unsaved class
+                    $(this).removeClass('editable-unsaved');
+                    //show messages
+                } else if(data && data.errors){
+                    //server-side validation error, response like {"errors": {"username": "username already exist"} }
+                    config.error.call(this, data.errors);
+                }
+            },
+            error: function(errors) {
+                var msg = '';
+                if(errors && errors.responseText) { //ajax error, errors = xhr object
+                    msg = errors.responseText;
+                } else { //validation error (client-side or server-side)
+                    $.each(errors, function(k, v) { msg += k+": "+v+"<br>"; });
+                }
+                alert(msg);
+            }
+        };
+        $.each(xeditable, function (index, value) {
+            var item = $(value);
+            var options = $.extend(item.data(), $opts);
+            xeditable.editable(options);
+        });
+    }
+}

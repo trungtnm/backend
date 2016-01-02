@@ -25,6 +25,9 @@ class CoreBackendController extends BaseController
 	protected $searchSelects = [];
 	protected $searchFields = [];
 
+    /**
+     * @return mixed
+     */
     public function init()
     {
         View::share('assetURL', asset('vendor/trungtnm/backend') . "/");
@@ -109,6 +112,11 @@ class CoreBackendController extends BaseController
         return view('TrungtnmBackend::general.adapter', $this->data);
 	}
 
+    /**
+     * edit and create action
+     * @param int $id
+     * @return View
+     */
 	public function editAction($id = 0){
 		$this->data['id'] = $id;
 		// WHEN UPDATE SHOW CURRENT INFORMATION
@@ -141,6 +149,91 @@ class CoreBackendController extends BaseController
 		return view('TrungtnmBackend::general.edit', $this->data);
 
 	}
+
+    /**
+     * sub controller must define method "getSource" . $field and return the data
+     * @param $id
+     * @param $field
+     * @return string
+     */
+    public function getSourceAction($id, $field)
+    {
+        $item = $this->model->find($id);
+        if ($item && $field) {
+            $method = "getSource" . $field;
+            return $this->{$method}($item);
+        }
+        return '';
+    }
+
+    /**
+     * @param null $item
+     * @return string
+     */
+    public function getSourcePosition($item = null)
+    {
+        $result = [[
+            'value' => null, 'text' => 'N/A'
+        ]];
+        for ($i = 1; $i <= 20; $i++) {
+            $result[] = [
+                'value' => $i,
+                'text' => $i
+            ];
+        }
+        return json_encode($result);
+    }
+
+    /**
+     * @param $id
+     * @param $field
+     * @return string
+     */
+    public function saveSourceAction($id, $field)
+    {
+        $response = ['Save errors'];
+        $item = $this->model->find($id);
+        if ($item && $field) {
+            $saveMethod = 'quickEdit' . ucfirst($field);
+            if (method_exists($this, $saveMethod)) {
+                $this->{$saveMethod}($item, request('value'));
+            } else {
+                $item->{$field} = request('value');
+                $item->save();
+            }
+            $this->afterSave($item);
+            $response = [
+                'id' => $item->id
+            ];
+        }
+
+        return json_encode($response);
+    }
+
+    /**
+     * @param $item
+     * @param $position
+     * @return mixed
+     */
+    public function quickEditPosition($item, $position)
+    {
+        return $item->setListPosition($position);
+    }
+
+    /**
+     * set the sort order position
+     * @return string
+     */
+    public function orderAction()
+    {
+        $position = intval(request('position'));
+        if ($position > 0) {
+            if ($this->model->setListPosition($position)) {
+                return 'true';
+            }
+        }
+        return 'false';
+    }
 
     /**
      * get menus with permission read of user
@@ -203,7 +296,11 @@ class CoreBackendController extends BaseController
 		return true;
 	}
 
-
+    /**
+     * @param int $id
+     * @param $data
+     * @return bool
+     */
 	public function saveObject($id = 0, &$data){
 		// check validate
 		$validate 		= Validator::make(Input::all(), $this->model->updateRules, $this->model->updateLangs);
@@ -233,6 +330,9 @@ class CoreBackendController extends BaseController
 
 	}
 
+    /**
+     * @return View
+     */
 	public function toggleAction(){
 
         $id 			= request('id');
@@ -253,7 +353,9 @@ class CoreBackendController extends BaseController
         }
 	}
 
-
+    /**
+     * @return string
+     */
 	public function deleteAction(){
         $id 	= request('id');
         $item 	= $this->model->find($id);
@@ -314,6 +416,10 @@ class CoreBackendController extends BaseController
         }
     }
 
+    /**
+     * @param $field
+     * @return string
+     */
     private function detectUploadFolder ($field)
     {
         if (is_array($this->model->dirUpload)) {
@@ -362,6 +468,13 @@ class CoreBackendController extends BaseController
 
     }
 
+    /**
+     * @param $name
+     * @param $dirUpload
+     * @param int $width
+     * @param int $height
+     * @return bool|string
+     */
     public function uploadImage($name, $dirUpload, $width = 0, $height = 0){
         if(Input::hasFile($name)){
             $dirUpload = $dirUpload ? trim($dirUpload, '/') . "/" : config('trungtnm.backend.uploadFolder');
@@ -392,6 +505,12 @@ class CoreBackendController extends BaseController
         }
     }
 
+    /**
+     * @param $name
+     * @param $dirUpload
+     * @param string $connection
+     * @return bool|string
+     */
     public function uploadFTP($name, $dirUpload, $connection = ''){
         if(Input::hasFile($name)){
             $dirUpload = $dirUpload ? "/" . trim($dirUpload, '/') . "/" : config('trungtnm.backend.uploadFolder');
@@ -420,4 +539,5 @@ class CoreBackendController extends BaseController
             return FALSE;
         }
     }
+
 }

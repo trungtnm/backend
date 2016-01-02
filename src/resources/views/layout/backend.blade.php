@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="{{ $assetURL }}css/chosen.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap-tagsinput.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap-multiselect.css">
+        <link rel="stylesheet" href="{{ asset('bower/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
         <!--[if lt IE 9]>
@@ -93,5 +94,6 @@
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap-checkbox.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap3-typeahead.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="{{ asset('bower/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
     </body>
 </html>

@@ -3,7 +3,8 @@ namespace Trungtnm\Backend\Utility;
 
 use Illuminate\Support\Facades\View;
 
-class HtmlMaker{
+class HtmlMaker
+{
 	/**
 	 *     default values
 	 *    
@@ -36,13 +37,20 @@ class HtmlMaker{
 	 *     @param string $id  	id of content  
 	 *     @param string $value value of content
 	 */
-	public function make($object, $field, $info){
+	public function make($object, $field, $info)
+	{
 		if ( !empty($field) && ( $field == 'icon') ) {
-			$value_icon = ( isset($info['alias']) ) ? $object->{$info['alias']} : $object->{$field};
+			if (isset($info['alias'])) {
+				$field = $info['alias'];
+				$value_icon = $object->{$info['alias']};
+			} else {
+				$value_icon = $object->{$field};
+			}
 			$value = '<span class="'.$value_icon.' fa-lg"></span>';
 		}else{
 			if(!empty($info['alias'])) {
 				$value = $this->aliasFieldValue($info['alias'], $object);
+				$field = $info['alias'];
 			} else {
 				$value = $object->{$field};
 			}
@@ -78,7 +86,8 @@ class HtmlMaker{
 		return $value;
 	}
 
-	public function init($id, $field, $value, $info){
+	public function init($id, $field, $value, $info)
+	{
 		$this->id = $id;
 		$this->field = $field;
 		$this->value = $value;
@@ -90,7 +99,8 @@ class HtmlMaker{
 		return true;
 	}
 
-	public function render(){
+	public function render()
+	{
 		return $this->{$this->type}();
 	}
 
@@ -98,11 +108,13 @@ class HtmlMaker{
 	 *     Get type text content
 	 *     @return string HTML
 	 */
-	public function text(){
+	public function text()
+	{
 		return "<td>".$this->value."</td>";
 	}
 
-	public function link(){
+	public function link()
+	{
 		return '<td><a target="_blank" href="'.url($this->value).'">'. str_limit(explode_end('/', $this->value), 20) .'</a></td>';
 	}
 
@@ -110,7 +122,8 @@ class HtmlMaker{
 	 *     Get type date content
 	 *     @return string HTML
 	 */
-	public function date(){
+	public function date()
+	{
 		if(!empty($this->value)){
 			return "<td>".$this->value."</td>";
 		}
@@ -123,7 +136,8 @@ class HtmlMaker{
 	 *     Get type text content
 	 *     @return string HTML
 	 */
-	public function number(){
+	public function number()
+	{
 		$suffix = !empty($this->suffix) ? $this->suffix : '';
 		$seperator = !empty($this->seperator) ? $this->seperator : 0;
 		return "<td>".(numberFormat( $this->value, 'vn', $seperator)). $suffix ."</td>";
@@ -133,7 +147,8 @@ class HtmlMaker{
 	 *     Get type boolean content
 	 *     @return [type] [description]
 	 */
-	public function boolean(){
+	public function boolean()
+	{
 		if(!empty($this->noScript)){
 			$onClick = "";
 		}
@@ -143,7 +158,8 @@ class HtmlMaker{
 		return '<td class="'.$this->field.'-'.$this->id.'"><a href="javascript:;" onclick="'.$onClick.'"><i class="'.$this->getClassTypeBoolean($this->value).'"></i></a></td>';
 	}
 
-	public function image(){
+	public function image()
+	{
 		return '<td><a class="fancy" href="'.url($this->value).'"><img src="'.url($this->value).'" width="120"
 		alt=""></a></td>';
 	}
@@ -152,9 +168,23 @@ class HtmlMaker{
 	 *     Helper get class of boolean type
 	 *     @return [type] [description]
 	 */
-	public function getClassTypeBoolean($value) {
+	public function getClassTypeBoolean($value)
+	{
     	return ($value) ? "fa fa-check fa-check-right" : "fa fa-times fa-times-wrong";
     }
+
+	/**
+	 * return xeditable field
+	 * @return string
+	 */
+	public function editable()
+	{
+		return '<td><a class="xeditable" data-type="select" data-pk="'.$this->id.'"
+		data-value="'.$this->value.'" data-source="'.route($this->source, [$this->id, $this->field]).'"
+		data-url="'.route($this->source, [$this->id, $this->field]).'"
+		data-title="'.$this->label.'"
+		data-name="'.$this->field.'">'. ($this->value ? $this->value : $this->default).'</a></td>';
+	}
 
     /**
      * render input field
@@ -165,7 +195,8 @@ class HtmlMaker{
      * @param array $data
      * @return string
      */
-    public function makeInput($field, $options, $value = null, $data = [] ){
+    public function makeInput($field, $options, $value = null, $data = [] )
+	{
     	$view = "TrungtnmBackend::general.input".ucfirst(strtolower($options['type']));
     	$helpText =
             !empty($options['help'])

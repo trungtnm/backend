@@ -93,7 +93,6 @@ class MenuController extends CoreBackendController  implements BackendController
     }
 
 	public function nestableAction(){
-		$this->data['defaultURL'] 	= $this->moduleURL;
 		$this->data['listMenus'] = $this->getMenu();
 
 		return view('TrungtnmBackend::menu.nestable', $this->data);

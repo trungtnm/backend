@@ -11,16 +11,6 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
     protected $loginNames = ['username', 'status'];
     protected $appends = ['roles_name', 'role_id'];
 
-    protected $fillable = [
-        'email',
-        'username',
-        'password',
-        'last_name',
-        'first_name',
-        'permissions',
-    ];
-
-
     public $loginRules	=	array(
 		"loginUsername"	=>	"required",
 		"loginPassword"	=>	"required"
