@@ -9,10 +9,11 @@ trait CommonTrait
     /**
      * @param $query
      * @param string $field
+     * @param string $order
      * @return mixed
      */
-    public function scopeLatest($query, $field = 'created_at'){
-        return $query->orderBy($field, 'desc');
+    public function scopeLatest($query, $field = 'created_at', $order = 'desc'){
+        return $query->orderBy($field, $order);
     }
 
     /**

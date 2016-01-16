@@ -26,7 +26,7 @@ class UserController extends CoreBackendController implements BackendControllerI
 
     public function getEditData()
     {
-        $this->data['roles'] = array_column(Role::where('id', '!=', 0)->get()->toArray(), 'name', 'id');
+        $this->data['roles'] = array_column(Role::where('id', '!=', 1)->get()->toArray(), 'name', 'id');
     }
 
     /**
@@ -52,6 +52,8 @@ class UserController extends CoreBackendController implements BackendControllerI
         // check validate
         if (!$id) {
             $this->model->updateRules['password'] = "required|min:6";
+        } else {
+            $this->model->updateRules['email'] = "required|unique:backend_users,email," . $id;
         }
         $validate 		= Validator::make(Input::all(), $this->model->updateRules, $this->model->updateLangs);
 

@@ -102,7 +102,8 @@ class CoreBackendController extends BaseController
         $this->data['defaultField'] = $defaultField;
         $this->data['defaultOrder'] = $defaultOrder;
         $this->data['showFields'] 	= $this->model->showFields;
-
+        $this->data['showDeleteButton'] = Sentinel::hasAccess([str_slug($this->data['module']) . '.delete']);
+        $this->data['showEditButton'] = Sentinel::hasAccess([str_slug($this->data['module']) . '.edit']);
 
         $this->data['lists'] =
             $this->model->search($keyword, $filterBy)
@@ -364,7 +365,7 @@ class CoreBackendController extends BaseController
                 $this->afterSave($item, true);
                 $item->renewCache();
                 // TO DO : move to config
-                if(is_array($this->model->uploadFields)){
+                if(!empty($this->model->uploadFields) && is_array($this->model->uploadFields)){
                     foreach ($this->model->uploadFields as $field) {
                         if(!empty($item->$field)){
                             @unlink($item->$field);
@@ -475,15 +476,11 @@ class CoreBackendController extends BaseController
      * @param int $height
      * @return bool|string
      */
-    public function uploadImage($name, $dirUpload, $width = 0, $height = 0){
+    public function uploadImage($name, $dirUpload){
         if(Input::hasFile($name)){
             $dirUpload = $dirUpload ? trim($dirUpload, '/') . "/" : config('trungtnm.backend.uploadFolder');
             $input         = Input::file($name);
             $realPath      = $input->getRealPath();
-
-            if($width != 0 && $height != 0 ){
-                $uploadFile    = Image::make($input)->resize($width, $height)->save($realPath);
-            }
             $filename = $input->getClientOriginalName();
             $nameArr  = explode('.', $filename);
             $extension = is_array($nameArr) && count($nameArr) > 1 ? end($nameArr) : '';
@@ -520,11 +517,10 @@ class CoreBackendController extends BaseController
             $extension = is_array($nameArr) && count($nameArr) > 1 ? end($nameArr) : '';
             if($extension){
                 array_pop($nameArr);
-                $fileName = implode('.', $nameArr);
+                $originalFileName = implode('.', $nameArr);
             }
-            $imgName = str_slug($fileName) . "-" . time() . "." . strtolower($extension);
+            $imgName = str_slug($originalFileName) . "-" . time() . "." . strtolower($extension);
 
-//            $uploadSuccess = (new FtpUtil())->uploadFtp($dirUpload, $originalFileName, $imgName);
             $uploadSuccess = true;
             if( $uploadSuccess ){
                 $connection = !$connection ? config('ftp::default') : $connection;

@@ -26,4 +26,3 @@ Route::group(['before' => 'notAuth'], function() {
 //    Route::get('install', array('as' => 'install', 'uses' => 'BackendController@install'));
 });
 
-

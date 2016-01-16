@@ -57,7 +57,7 @@ class BackendController extends CoreBackendController
         if ($validate->passes()) {
             try {
                 $user = User::where([
-                        'username' => request('loginUsername'),
+                        'email' => request('loginEmail'),
                         'status'   => 1,
                     ])
                     ->first();
@@ -70,7 +70,7 @@ class BackendController extends CoreBackendController
 
                 $remember = (bool) request('remember');
                 $dataLogin = array(
-                    'username' => request("loginUsername"),
+                    'email' => request("loginEmail"),
                     'password' => request("loginPassword"),
                     'status'   => 1
                 );

@@ -110,5 +110,20 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
             }
 
         });
+
+        Route::filter('loggedIn', function($route, $request, $permission = null)
+        {
+            if (Sentinel::check()) {
+                if (empty($permission) || Sentinel::hasAccess([$permission])) {
+                    return;
+                }
+            }
+            if (empty($permission)) {
+                return redirect(route('homepage'))->withErrors('Please login first');
+            } else {
+                return redirect(route('homepage'))->withErrors('Permission denied.');
+            }
+
+        });
     }
 }

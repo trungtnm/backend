@@ -8,16 +8,17 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
     use ModelTrait;
 
     protected $table = 'backend_users';
-    protected $loginNames = ['username', 'status'];
+    protected $loginNames = ['email', 'status', 'username'];
     protected $appends = ['roles_name', 'role_id'];
+    protected $fillable = ['username', 'first_name', 'last_name'];
 
     public $loginRules	=	array(
-		"loginUsername"	=>	"required",
+		"loginEmail"	=>	"required",
 		"loginPassword"	=>	"required"
 	);
 
 	public $loginLangs	=	array(
-		"loginUsername.required"	=>	"Please enter your username",
+		"loginEmail.required"	=>	"Please enter your email",
 		"loginPassword.required"	=>	"Please enter your password"
 	);
 
@@ -103,7 +104,7 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 
 	public $updateRules = [
         "username"			=>	"required|min:5",
-        "email"				=>	"required",
+        "email"				=>	"required|unique:backend_users,email",
         'password'			=>	"min:6",
         "roleId"           =>  "required"
     ];

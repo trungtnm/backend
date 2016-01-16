@@ -80,15 +80,19 @@
 					} 
 				?>
 				<td width="200">
-					<div class="col-md-5">                                      
+					<div class="col-md-5">
+						@if($showEditButton)
 		                <a class="btn btn-sm btn-info" href="{{ route($module.'Update', $item->id) }}">
 		                    <i class="ace-icon fa fa-pencil bigger-120"></i>Edit
 		                </a>
+						@endif
 		            </div>
 		            <div class="col-md-5">
+						@if($showDeleteButton)
 		            	<a class="btn btn-sm btn-danger" onclick="deleteItem({{$item->id}})" href="javascript:;">
 		                    <i class="ace-icon fa fa-trash-o bigger-120"></i>Delete
 		                </a>
+						@endif
 		            </div>
 		        </td>
 			</tr>
