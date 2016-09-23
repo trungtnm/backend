@@ -26,7 +26,7 @@ class Menu extends AbstractModel
         ],
         'icon'         =>  [
             'label'         =>  'Icon',
-            'type'          =>  'text'
+            'type'          =>  'text',
         ],
         'status'         =>  [
             'label'         =>  'Status',

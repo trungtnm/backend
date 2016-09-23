@@ -56,7 +56,10 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //load helpers
+        require __DIR__ .  '/Helpers/common.php';
 
+        $this->registerConsoleCommands();
     }
 
     /**
@@ -125,5 +128,21 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
             }
 
         });
+    }
+
+    /**
+     * Register the package console commands.
+     *
+     * @return void
+     */
+    protected function registerConsoleCommands()
+    {
+        $this->app->bindShared('trungtnm:listifyAttach', function($app)
+        {
+            return new Commands\ListifyAttach();
+        });
+        $this->commands([
+            'trungtnm:listifyAttach'
+        ]);
     }
 }

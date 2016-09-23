@@ -12,6 +12,7 @@ class HtmlMaker
 	protected $seperator = 0;
 	protected $suffix = '';
 	protected $prefix = '';
+	protected $locale;
 
     /**
      * @var $instance Singleton
@@ -29,6 +30,27 @@ class HtmlMaker
 	 *     @var string
 	 */
 	protected $value;
+
+	/**
+	 * @param $locale
+	 * @return $this
+	 */
+	public function setLocale($locale)
+	{
+		$this->locale = $locale;
+		return $this;
+	}
+
+	/**
+	 * @param $languages
+	 * @return mixed
+	 */
+	public function languagesSwitcher($languages) {
+		return view(
+			'TrungtnmBackend::general.languages',
+			['langs' => $languages]
+		)->render();
+	}
 
 	/**
 	 *     make
@@ -179,11 +201,12 @@ class HtmlMaker
 	 */
 	public function editable()
 	{
+		$defaultText = !empty($this->default) ? $this->default : 'None';
 		return '<td><a class="xeditable" data-type="select" data-pk="'.$this->id.'"
 		data-value="'.$this->value.'" data-source="'.route($this->source, [$this->id, $this->field]).'"
 		data-url="'.route($this->source, [$this->id, $this->field]).'"
 		data-title="'.$this->label.'"
-		data-name="'.$this->field.'">'. ($this->value ? $this->value : $this->default).'</a></td>';
+		data-name="'.$this->field.'">'. ($this->value ? $this->value : $defaultText).'</a></td>';
 	}
 
     /**
@@ -197,6 +220,7 @@ class HtmlMaker
      */
     public function makeInput($field, $options, $value = null, $data = [] )
 	{
+		$inputNameSuffix = $this->locale ? '_' . $this->locale : '';
     	$view = "TrungtnmBackend::general.input".ucfirst(strtolower($options['type']));
     	$helpText =
             !empty($options['help'])
@@ -206,11 +230,11 @@ class HtmlMaker
     	return view(
             $view,
             [
-                'field' => $field,
+                'field' => $field . $inputNameSuffix,
                 'value' => $value,
                 'options' => $options,
                 'data' => $data,
-                'helpText' => $helpText
+                'helpText' => $helpText,
             ]
         )->render();
 
@@ -222,9 +246,13 @@ class HtmlMaker
      */
     public function showError($validate, $fieldName)
     {
+		$inputNameSuffix = $this->locale ? '_' . $this->locale : '';
         return view(
             'TrungtnmBackend::general.error',
-            ['validate' => $validate, 'fieldName' => $fieldName]
+            [
+				'validate' => $validate,
+				'fieldName' => $fieldName . $inputNameSuffix,
+			]
         )->render();
     }
 }

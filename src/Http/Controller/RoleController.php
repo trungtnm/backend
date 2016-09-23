@@ -47,7 +47,7 @@ class RoleController extends CoreBackendController implements BackendControllerI
 		$moduleData = Menu::all()->toArray();
 		if( !empty($permissions) ){
 			foreach( $permissions as $permission ){
-				$permissionMap[$permission['module']][] = $permission;
+				$permissionMap[strtolower($permission['module'])][] = $permission;
 			}
 		}
 		if( !empty($moduleData) ){

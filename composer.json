@@ -14,7 +14,12 @@
       "php": ">=5.4.0",
       "anchu/ftp": "~2.0",
       "cartalyst/sentinel": "2.0.*",
-      "intervention/image": "2.*"
+      "intervention/image": "2.*",
+      "dimsav/laravel-translatable": "5.5",
+      "barryvdh/laravel-translation-manager": "^0.2.1",
+      "lord/laroute": "2.*",
+      "barryvdh/laravel-debugbar": "^2.1",
+      "lookitsatravis/listify": "^1.1"
     },
     "autoload": {
       "psr-4": {

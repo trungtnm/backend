@@ -2,10 +2,10 @@
 
 namespace Trungtnm\Backend\Model;
 
-
+use Cartalyst\Sentinel\Roles\EloquentRole;
 use Trungtnm\Backend\Core\ModelTrait;
 
-class Role extends \Cartalyst\Sentinel\Roles\EloquentRole
+class Role extends EloquentRole
 {
     use ModelTrait;
 
@@ -52,5 +52,28 @@ class Role extends \Cartalyst\Sentinel\Roles\EloquentRole
     ];
 
     public $updateLangs = [];
+
+    /**
+     * @param $permission
+     *
+     * @return $this
+     */
+    public function removePermission($permission)
+    {
+        $permission = strtolower($permission);
+        return parent::removePermission($permission);
+    }
+
+    /**
+     * @param      $permission
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function addPermission($permission, $value = true)
+    {
+        $permission = strtolower($permission);
+        return parent::addPermission($permission, $value);
+    }
 
 }

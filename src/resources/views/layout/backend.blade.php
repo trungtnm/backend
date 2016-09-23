@@ -7,13 +7,13 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>{{ $title or "Trungtnm Backend" }}</title>
+        <title>{{ $title or "Admin Control Panel" }}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
        <!-- text fonts -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">
+        {{--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">--}}
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap.min.css">
         <link rel="stylesheet" href="{{  $assetURL }}css/font-awesome.min.css">
 

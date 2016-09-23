@@ -10,7 +10,6 @@
 	<input style="display: none" id="{{ $field }}" type="text" name="{{ $field }}" value="{{ $value }}" class="form-control">
 </div>
 
-
 @if(isset($value))
 <div>
     <a class="{{ !empty($option['useFancybox']) ? 'fancy' : '' }}" target="_blank" href="{{ URL::to($value) }}">Review</a>

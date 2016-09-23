@@ -57,7 +57,7 @@
         $('#save-btn').click(function(){
 			serialized = $('ol.sortable').nestedSortable('serialize');
 			$.post(
-				"{{  route( $module. 'PostNestable')  }}",
+					"{{  route( $module. 'PostNestable')  }}",
 				serialized
 				,
 				function(data){

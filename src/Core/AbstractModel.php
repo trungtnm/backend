@@ -34,7 +34,7 @@ class AbstractModel extends Eloquent{
     /**
      * @param array $showField
      */
-	public function __construct(){
-		parent::__construct();
+	public function __construct(array $attributes  = []){
+		parent::__construct($attributes);
 	}
 }

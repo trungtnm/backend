@@ -32,4 +32,12 @@ class Permission extends AbstractModel
         ]);
         return $query->delete();
     }
+
+    public function scopeRemoveModule($query, $module)
+    {
+        $query->where([
+            'module' => $module
+        ]);
+        return $query->delete();
+    }
 }

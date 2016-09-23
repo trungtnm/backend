@@ -1,4 +1,4 @@
-<div class="row-fluid" data-order="1">
+<div class="form-group" data-order="1">
     <label for="icon-preview" class="control-label col-sm-2">Role Permissions</label>
     <div class="col-sm-10">
         <a class="btn btn-default" href="javascript:;" id="collapse-toggle">
@@ -26,7 +26,7 @@
                                     <div class="checkbox">
                                         <label class="permission-label">
                                             <?php
-                                            $perm = $permission['module'] . $permission['permission'];
+                                            $perm = strtolower($permission['module'] . $permission['permission']);
                                             $checked = !empty($item) && array_key_exists($perm, $rolePermissions)
                                                     ? 'checked="checked"'
                                                     : '';

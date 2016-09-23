@@ -90,7 +90,8 @@ class UserController extends CoreBackendController implements BackendControllerI
 
                 $this->data['id'] = $user->id;
                 $user->renewCache();
-                $this->afterSave($user);
+                $action = !$id ? self::ACTION_CREATE : self::ACTION_EDIT;
+                $this->afterSave($user, $action);
                 return true;
 
             } catch (\Exception $e) {
@@ -147,5 +148,4 @@ class UserController extends CoreBackendController implements BackendControllerI
 		}
         return view('TrungtnmBackend::user.changePassword', $this->data);
 	}
-
 }

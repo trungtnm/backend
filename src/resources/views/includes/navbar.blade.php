@@ -18,7 +18,7 @@
 </button>
 
 <div class="navbar-header pull-left">
-    <a href="#" class="navbar-brand">
+    <a href="{{ route('indexDashboard') }}" class="navbar-brand">
         <small>
             Control Panel
         </small>

@@ -33,63 +33,81 @@ class MenuController extends CoreBackendController  implements BackendController
     }
 
     /**
-     *
      * @param int $id
+     *
+     * @return $this
      */
 	public function processData($id = 0){
         $this->updateData = array(
             'id'        =>  $id,
             'status'    =>	(int) request('status'),
             'name'      =>	trim(request('name')),
-            'module' =>	trim(request('module')),
+            'module' =>	trim(strtolower(request('module'))),
             'parent_id' =>	intval(request('parent_id')),
             'slug'      =>	trim(request('slug')),
             'icon'      =>	trim(request('icon')),
         );
+        return $this;
 	}
 
     /**
-     * add full permission to Root user
-     *
-     * @param $item
+     * @param      $item
+     * @param bool $isDelete
      */
-    public function afterSave($item, $isDelete = false)
+    public function afterSave($item, $action = '')
     {
         $adminRoles = [
             Sentinel::findRoleById(1), // role ROOT
             Sentinel::findRoleById(2)  // role Admin
         ];
-        if (!$isDelete) {
+        if ($action == self::ACTION_CREATE) {
             $this->addPermission($adminRoles, $item->module);
-        } else {
+        } elseif ($action == self::ACTION_DELETE) {
             $this->removePermission($adminRoles, $item->module);
         }
     }
 
-    public function addPermission($roles, $module)
+    /**
+     * @param $roles
+     * @param $module
+     *
+     * @return $this
+     */
+    private function addPermission($roles, $module)
     {
         $defaultPermissions = Permission::$defaultPermissions;
+        $permissionAdded = [];
         foreach ($roles as $role) {
             foreach ($defaultPermissions as $permission) {
-                $role = $role->addPermission($module. $permission);
-                Permission::add($module, $permission);
+                $role = $role->addPermission($module . $permission);
+                if (!in_array($module . $permission, $permissionAdded)) {
+                    Permission::add($module, $permission);
+                    $permissionAdded[] = $module . $permission;
+                }
             }
             $role->save();
         }
-        return true;
+        return $this;
     }
 
+    /**
+     * @param $roles
+     * @param $module
+     *
+     * @return $this
+     */
     public function removePermission($roles, $module)
     {
         $defaultPermissions = Permission::$defaultPermissions;
         foreach ($roles as $role) {
             foreach ($defaultPermissions as $permission) {
                 $role = $role->removePermission($module . $permission);
-                Permission::remove($module, $permission);
             }
             $role->save();
         }
-        return true;
+        Permission::removeModule($module);
+
+        return $this;
     }
 
 	public function nestableAction(){
@@ -127,6 +145,7 @@ class MenuController extends CoreBackendController  implements BackendController
 							'parent_id'	=>	0
 						));
 					}
+                    $this->afterSave($item, self::ACTION_DELETE);
 					return response("success");
 				}
 			}
@@ -135,7 +154,4 @@ class MenuController extends CoreBackendController  implements BackendController
 
 	}
 
-	/*----------------------------- END DELETE --------------------------------*/
-
-	
 }

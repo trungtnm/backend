@@ -15,4 +15,7 @@
             </small>
         @endif
     </h1>
+    @if (!empty($langs) && count($langs))
+        {!! $maker->languagesSwitcher($langs) !!}
+    @endif
 </div>

@@ -1,16 +1,17 @@
 <?php
 namespace Trungtnm\Backend\Model;
 
+use Cartalyst\Sentinel\Users\EloquentUser;
 use Trungtnm\Backend\Core\ModelTrait;
 
-class User extends \Cartalyst\Sentinel\Users\EloquentUser
+class User extends EloquentUser
 {
     use ModelTrait;
 
     protected $table = 'backend_users';
-    protected $loginNames = ['email', 'status', 'username'];
+    protected $loginNames = ['email', 'status', 'password'];
     protected $appends = ['roles_name', 'role_id'];
-    protected $fillable = ['username', 'first_name', 'last_name'];
+    protected $fillable = ['username', 'first_name', 'last_name','email','status','role_id', 'password'];
 
     public $loginRules	=	array(
 		"loginEmail"	=>	"required",

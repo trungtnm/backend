@@ -110,4 +110,24 @@ trait CommonTrait
         }
         return $query->slug($slug)->first();
     }
+
+    /**
+     * order by $field and move row with null value to the bottom of results
+     * @param $query
+     * @param $field
+     * @return mixed
+     */
+    public function scopeOrderAscNotNull($query, $field)
+    {
+        return $query->orderByRaw("isnull({$field}) asc")->orderBy($field, 'asc');
+    }
+
+    /**
+     * get others models
+     * @param int $limit
+     * @return mixed
+     */
+    public function scopeGetOthers($query, $limit = 10) {
+        return $query->where('id', '<>', $this->id)->active()->limit($limit)->orderBy('position','asc')->get();
+    }
 }

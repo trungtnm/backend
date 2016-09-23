@@ -7,35 +7,35 @@
 /*--------------------------------- NESTABLE -----------------------------------------------*/
 
 ol .placeholder {
-  outline: 1px dashed #4183C4;
-  /*-webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  margin: -1px;*/
+    outline: 1px dashed #4183C4;
+    /*-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin: -1px;*/
 }
 
 .mjs-nestedSortable-error {
-  background: #fbe3e4;
-  border-color: transparent;
+    background: #fbe3e4;
+    border-color: transparent;
 }
 
 ol {
-  margin: 0;
-  padding: 0;
-  padding-left: 30px;
+    margin: 0;
+    padding: 0;
+    padding-left: 30px;
 }
 
 
 ol.sortable, ol.sortable ol {
-  margin: 0 0 0 25px;
-  padding: 0;
-  list-style-type: none; 
+    margin: 0 0 0 25px;
+    padding: 0;
+    list-style-type: none;
 }
 
 
 .sortable li {
-  margin: 5px 0 0 0;
-  padding: 0;
+    margin: 5px 0 0 0;
+    padding: 0;
 }
 .sortable li a  {
     float: left;
@@ -43,76 +43,76 @@ ol.sortable, ol.sortable ol {
 }
 
 .sortable li div  {
-  border: 1px solid #d4d4d4;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border-color: #D4D4D4 #D4D4D4 #BCBCBC;
-  padding: 6px;
- margin: 0 0 0 18px;
-  cursor: move;
-  background: #f6f6f6;
-  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-  background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-  background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+    padding: 6px;
+    margin: 0 0 0 18px;
+    cursor: move;
+    background: #f6f6f6;
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
 }
 
 .sortable li.mjs-nestedSortable-branch div {
-  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
 
 }
 
 .sortable li.mjs-nestedSortable-leaf div {
-  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #bcccbc 100%);
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#bcccbc 100%);
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #bcccbc 100%);
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#bcccbc 100%);
 
 }
 
 li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
-  border-color: #999;
-  background: #fafafa;
+    border-color: #999;
+    background: #fafafa;
 }
 
 .disclose {
-  cursor: pointer;
-  width: 10px;
-  display: none;
+    cursor: pointer;
+    width: 10px;
+    display: none;
 }
 
 .sortable li.mjs-nestedSortable-collapsed > ol {
-  display: none;
+    display: none;
 }
 
 .sortable li.mjs-nestedSortable-branch > div > .disclose {
-  display: inline-block;
+    display: inline-block;
 }
 
 .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
-  content: '+ ';
+    content: '+ ';
 }
 
 .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
-  content: '- ';
+    content: '- ';
 }
 
 .page-content form.form-horizontal .control-label{
-  font-size: 1.2em;
-  display: inline-block;
-  padding: 0.4em .6em .5em;
-  /*font-weight: 700;*/
-  line-height: 1.2em;
-  color: #fff;
-  text-align: right;
-  /*white-space: nowrap;*/
-  vertical-align: baseline;
-  border-radius: .25em;
-  background-color: #0E5CDC;
-  /*margin: 0 0 8px 0;*/
+    font-size: 1.2em;
+    display: inline-block;
+    padding: 0.4em .6em .5em;
+    /*font-weight: 700;*/
+    line-height: 1.2em;
+    color: #fff;
+    text-align: right;
+    /*white-space: nowrap;*/
+    vertical-align: baseline;
+    border-radius: .25em;
+    background-color: #0E5CDC;
+    /*margin: 0 0 8px 0;*/
 
 }
 .page-content form .col-md-6{padding-left: 0;}
@@ -122,46 +122,46 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 #imagesContainer{margin-top: 20px;}
 .gallery-image{margin-right: 20px;margin-bottom: 30px;border: 1px solid #0E5CDC;}
 .gallery-image-remove{
-  position: absolute;
-  background-color: #EC0C0C;
-  padding: 5px 10px;
-  top: -16px;
-  right: -14px;
-  color: #FFFFFF;
-  cursor: pointer;
-  text-decoration: none;
+    position: absolute;
+    background-color: #EC0C0C;
+    padding: 5px 10px;
+    top: -16px;
+    right: -14px;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-decoration: none;
 }
 .gallery-image-remove:hover{font-size: 15px;color: #FDFF00;text-decoration: none}
 
 .page-content form .panel-body label{
-  background-color: transparent;
-  color: #000;
-  padding: 0;
-  margin: 0;
-  padding-left: 20px;
+    background-color: transparent;
+    color: #000;
+    padding: 0;
+    margin: 0;
+    padding-left: 20px;
 }
 .pb10{padding-bottom: 10px;}
 .mt40{margin-top: 40px;}
 .widget-body{    padding-bottom: 10px}
 
 .clearfix:after, .dl-horizontal dd:after, .container:after, .container-fluid:after, .row:after, .form-horizontal .form-group:after, .btn-toolbar:after, .btn-group-vertical>.btn-group:after, .nav:after, .navbar:after, .navbar-header:after, .navbar-collapse:after, .pager:after, .panel-body:after, .modal-footer:after {
- /* visibility: hidden;
-  font-size: 0.1em;
-  display: block;
-  line-height: 0;
-  height: 0.1px;
-      content: " ";
-  clear: both;*/
+    /* visibility: hidden;
+     font-size: 0.1em;
+     display: block;
+     line-height: 0;
+     height: 0.1px;
+         content: " ";
+     clear: both;*/
 }
 
 .clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
-  }
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
 .clearfix { display: inline-block; }
@@ -175,25 +175,25 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 .chosen-container-single .chosen-single{height: 33px !important;line-height: 33px !important;font-size: 1.2em;}
 .multiselect-container{width: 100%;}
 .multiselect .caret {
-  margin-top: -2px !important;
-  position: absolute;
-  right: 5px;
-  top: 50%;
+    margin-top: -2px !important;
+    position: absolute;
+    right: 5px;
+    top: 50%;
 }
 .p5{padding: 5px;}
 .advertiseManager .form-horizontal .form-group {
-  clear: both;
+    clear: both;
 }
 
 .page-content #filter-form .relative{
-  min-height: 40px;
-  padding-right: 15px;
-  padding-left: 5px;
+    min-height: 40px;
+    padding-right: 15px;
+    padding-left: 5px;
 }
 .page-content #filter-form .relative:last-child{
 }
 .form-horizontal textarea.form-control{
-  min-height: 100px
+    min-height: 100px
 }
 #accordion.panel-group{
     margin-top: 20px;
@@ -207,4 +207,19 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 }
 .permission-label{
     display: block;
+}
+.language-switcher {
+    display: inline-block;
+    margin-right: 15px;
+}
+.language-input {
+    display: none;
+}
+.language-input.active {
+    display: block;
+}
+.language-switcher.active, .language-switcher:hover {
+    background: red;
+    color: #fff;
+    text-decoration: none;
 }

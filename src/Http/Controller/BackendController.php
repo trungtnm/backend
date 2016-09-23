@@ -74,7 +74,9 @@ class BackendController extends CoreBackendController
                     'password' => request("loginPassword"),
                     'status'   => 1
                 );
-                if ($checkLogin = Sentinel::authenticate($dataLogin, $remember)) {
+                $user = Sentinel::authenticate($dataLogin, $remember);
+                debug($user);
+                if ($user) {
                     $data['status'] = true;
                 }
             } catch (\Exception $e) {
@@ -110,4 +112,12 @@ class BackendController extends CoreBackendController
         return view('TrungtnmBackend::denied', $this->data);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function processData($id = 0)
+    {
+        // TODO: Implement processData() method.
+    }
 }

@@ -84,9 +84,12 @@ trait ModelTrait{
                         if($searchField == 'filterBy'){
                             if(!empty($keyword)){
                                 if(strpos($field['value'], 'scope') !== FALSE){
-                                    $scopeFunction = substr($field['value'], 5);
+                                    $scopeFunction = strtolower(substr($field['value'], 5));
                                     $query->{$scopeFunction}($keyword);
-                                }else{
+                                } elseif(strpos($field['value'], 'translated') !== FALSE) {
+                                    $translationField = strtolower(substr($field['value'], 10));
+                                    $query->findTranslate($translationField, $keyword);
+                                } else {
                                     $query->where($field['value'], 'like', "%{$keyword}%");
                                 }
                             }

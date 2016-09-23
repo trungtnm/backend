@@ -60,7 +60,8 @@ $(document).ready(function(){
             step : 15
         });
     }
-        //reorder hidden fields
+
+    //reorder hidden fields
     var customFields = $('#preHiddenFields .row-fluid');
     if(customFields.length){
         var configuredFields = $('.form-edit .row-fluid').length - customFields.length;
@@ -70,6 +71,14 @@ $(document).ready(function(){
             $(item).insertAfter($('.page-content form.form-horizontal .row-fluid:eq('+order+')'))
         })
     }
+
+    $('.language-switcher').click(function(){
+        var locale = $(this).data('locale');
+        $('.language-switcher').removeClass('active');
+        $(this).addClass('active');
+        $('.language-input').hide().removeClass('active');
+        $('.language-input.language-'+locale).fadeIn().addClass('active');
+    });
 });
 /*
  * SIDEBAR MENU
