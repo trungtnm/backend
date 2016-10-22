@@ -9,17 +9,17 @@ class User extends EloquentUser
     use ModelTrait;
 
     protected $table = 'backend_users';
-    protected $loginNames = ['email', 'status', 'password'];
+    protected $loginNames = ['username', 'status'];
     protected $appends = ['roles_name', 'role_id'];
     protected $fillable = ['username', 'first_name', 'last_name','email','status','role_id', 'password'];
 
     public $loginRules	=	array(
-		"loginEmail"	=>	"required",
+		"loginUsername"	=>	"required",
 		"loginPassword"	=>	"required"
 	);
 
 	public $loginLangs	=	array(
-		"loginEmail.required"	=>	"Please enter your email",
+		"loginUsername.required"	=>	"Please enter your username",
 		"loginPassword.required"	=>	"Please enter your password"
 	);
 
@@ -104,8 +104,8 @@ class User extends EloquentUser
     ];
 
 	public $updateRules = [
-        "username"			=>	"required|min:5",
-        "email"				=>	"required|unique:backend_users,email",
+        "username"			=>	"required|min:6|unique:backend_users,username",
+        "email"				=>	"required|email|unique:backend_users,email",
         'password'			=>	"min:6",
         "roleId"           =>  "required"
     ];

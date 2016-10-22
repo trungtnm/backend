@@ -110,6 +110,9 @@ trait ModelTrait{
             }
 
         }
+        if (method_exists($this, 'adapterFilter')) {
+            $query = $this->adapterFilter($query);
+        }
         $query->relation();
         return $query;
     }

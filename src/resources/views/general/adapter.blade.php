@@ -1,6 +1,6 @@
 <div class="clearfix"></div>
 <div>
-	@if($lists->count() > 0 )
+	@if(count($lists) > 0 )
 	    {!! $lists->render() !!}
 	@else
 	<div style="height:34px;margin:20px;line-height:34px;padding: 0px 15px" class="pull-left label label-danger">
@@ -33,35 +33,37 @@
 	                            </li>
 	                            <li>
 	                                <a id="id-select-message-none" href="javascript:;">Delete</a>
-	                            </li>                                       
+	                            </li>
 	                        </ul>
 	                    </div>
 
 	                </div>
 				</th>
 				<?php foreach( $showFields as $field =>	$info ){ ?>
-						<?php
-							$nextOrder = "desc";
-							$orderClass = "sorting";
-							if( $field == $defaultField ){
-								if( $defaultOrder == "desc" ){
-									$nextOrder = "asc";
-									$orderClass = "sorting_asc";
-								}else{
-									$orderClass = "sorting_desc";
-								}
-							}
-						?>
-						<th class="<?=$orderClass?>"><a href="javascript:;" onclick="pagination.sort('<?=$field?>','<?=$nextOrder?>')"><?=$info['label']?></a></th>
+                    <?php
+                        $nextOrder = "desc";
+                        $orderClass = "sorting";
+                        if( $field == $defaultField ){
+                            if( $defaultOrder == "desc" ){
+                                $nextOrder = "asc";
+                                $orderClass = "sorting_asc";
+                            }else{
+                                $orderClass = "sorting_desc";
+                            }
+                        }
+                    ?>
+                    <th class="<?=$orderClass?>"><a href="javascript:;" onclick="pagination.sort('<?=$field?>','<?=$nextOrder?>')"><?=$info['label']?></a></th>
 				<?php } ?>
 			<?php } ?>
+			@if(!empty($showEditButton) || !empty($showDeleteButton))
 			<th><a href="javascript:;">Action</a></th>
+			@endif
 		</tr>
     </thead>
 
 	<tbody>
 		<?php
-		if( $lists->count() ){
+		if( count($lists) ){
 			$stt = ($lists->currentPage()-1) * $lists->perPage() ;
 		?>
 			<?php foreach( $lists as $item ){ $stt++; ?>
@@ -79,22 +81,24 @@
 						} 
 					} 
 				?>
-				<td width="200">
+                @if(!empty($showEditButton) || !empty($showDeleteButton))
+                <td width="200">
 					<div class="col-md-5">
-						@if($showEditButton)
+						@if(!empty($showEditButton))
 		                <a class="btn btn-sm btn-info" href="{{ route($module.'Update', $item->id) }}">
 		                    <i class="ace-icon fa fa-pencil bigger-120"></i>Edit
 		                </a>
 						@endif
 		            </div>
 		            <div class="col-md-5">
-						@if($showDeleteButton)
+						@if(!empty($showDeleteButton))
 		            	<a class="btn btn-sm btn-danger" onclick="deleteItem({{$item->id}})" href="javascript:;">
 		                    <i class="ace-icon fa fa-trash-o bigger-120"></i>Delete
 		                </a>
 						@endif
 		            </div>
 		        </td>
+				@endif
 			</tr>
 			<?php } ?>
 		<?php }else{ ?>

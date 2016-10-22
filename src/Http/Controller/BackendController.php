@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Validator;
 use Sentinel;
 use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Module;
-use Trungtnm\Backend\Model\Permission;
-use Trungtnm\Backend\Model\Role;
 use Trungtnm\Backend\Model\User;
 
 class BackendController extends CoreBackendController
@@ -27,8 +25,8 @@ class BackendController extends CoreBackendController
     public function loginAction()
     {
         $this->layout = null;
-
-        if (Sentinel::check() && (Sentinel::getUser()->inRole(Role::ROOT) || Sentinel::getUser()->inRole(Role::ADMIN)) ) {
+        $user = Sentinel::getUser();
+        if ($user && !$this->checkRole()) {
             return Redirect::route('indexDashboard');
         }
 
@@ -46,6 +44,7 @@ class BackendController extends CoreBackendController
                 return Redirect::route('indexDashboard');
             }
         }
+
         return view('TrungtnmBackend::login', $this->data);
     }
 
@@ -53,30 +52,19 @@ class BackendController extends CoreBackendController
     {
         $user = new User();
         $validate = Validator::make(Input::all(), $user->loginRules, $user->loginLangs);
-
         if ($validate->passes()) {
             try {
-                $user = User::where([
-                        'email' => request('loginEmail'),
-                        'status'   => 1,
-                    ])
-                    ->first();
-                if (!$user) {
-                    throw new \Exception('This user has been not active yet.');
-                }
-                if (!$user->inRole(Role::ROOT) && !$user->inRole(Role::ADMIN)) {
-                    throw new \Exception('Account is not exists');
-                }
-
                 $remember = (bool) request('remember');
-                $dataLogin = array(
-                    'email' => request("loginEmail"),
+                $dataLogin = [
+                    'username' => request("loginUsername"),
                     'password' => request("loginPassword"),
                     'status'   => 1
-                );
+                ];
                 $user = Sentinel::authenticate($dataLogin, $remember);
-                debug($user);
                 if ($user) {
+                    if (!$this->checkRole($user)) {
+                        throw new \Exception('Account is not exists');
+                    }
                     $data['status'] = true;
                 }
             } catch (\Exception $e) {
@@ -100,6 +88,7 @@ class BackendController extends CoreBackendController
             @session_start();
         }
         unset($_SESSION['isLoggedIn']);
+
         return Redirect::route('loginBackend');
 
     }
@@ -114,10 +103,35 @@ class BackendController extends CoreBackendController
 
     /**
      * @param int $id
+     *
      * @return mixed
      */
     public function processData($id = 0)
     {
         // TODO: Implement processData() method.
+    }
+
+    /**
+     * @param null $user
+     *
+     * @return bool
+     */
+    private function checkRole($user = null)
+    {
+        $allowed = false;
+        if (!$user) {
+            $user = Sentinel::getUser();
+        }
+        if ($user) {
+            $roles = config('trungtnm.backend.roles', []);
+            foreach ($roles as $role) {
+                if ($user->inRole($role)) {
+                    $allowed = true;
+                    break;
+                }
+            }
+        }
+
+        return $allowed;
     }
 }

@@ -26,8 +26,10 @@
         <link rel="stylesheet" href="{{ $assetURL }}css/jquery.fancybox.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/define.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/chosen.css">
+        <link rel="stylesheet" href="{{ $assetURL }}css/loader.min.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap-tagsinput.css">
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap-multiselect.css">
+        <link rel="stylesheet" href="{{ asset('vendor/trungtnm/backend/css/datepicker/datepicker3.css') }}">
         <link rel="stylesheet" href="{{ asset('bower/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
@@ -40,7 +42,6 @@
             var root = "{{ url(config('trungtnm.backend.uri')) }}/";
             var assetURL = "{{ $assetURL }}";
             var module = "{{Request::segment(2) }}";
-
         </script>
         
         <script type="text/javascript" src="{{ $assetURL }}js/vendor/modernizr-2.6.2.min.js"></script>
@@ -79,10 +80,15 @@
                     <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
                  </a>
             </div>
-        </div>         
+        </div>
+        <div class="loader-inner line-scale" id="pageLoader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
 
-
-        
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace-extra.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace-elements.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace.min.js"></script>
@@ -94,6 +100,7 @@
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap-checkbox.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap3-typeahead.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="{{ asset('vendor/trungtnm/backend/js/datepicker/bootstrap-datepicker.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bower/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
     </body>
 </html>

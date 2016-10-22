@@ -14,7 +14,7 @@ class VerifyCsrfToken extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfT
     protected function shouldPassThrough($request)
     {
         if (
-            $request->segment(1) == config('trungtnm.backend.uri')
+            $request->segment(1) == trim(config('trungtnm.backend.uri'), '/')
             && $request->isXmlHttpRequest()
             && Sentinel::check()
         ) {

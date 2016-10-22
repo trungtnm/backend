@@ -18,7 +18,7 @@ class Permission extends AbstractModel
     public function scopeAdd($query, $module, $permission)
     {
         $data = [
-            'module' => $module,
+            'module' => strtolower($module),
             'permission' => $permission
         ];
         return $query->insert($data);
@@ -27,7 +27,7 @@ class Permission extends AbstractModel
     public function scopeRemove($query, $module, $permission)
     {
         $query->where([
-            'module' => $module,
+            'module' => strtolower($module),
             'permission' => $permission
         ]);
         return $query->delete();
@@ -36,7 +36,7 @@ class Permission extends AbstractModel
     public function scopeRemoveModule($query, $module)
     {
         $query->where([
-            'module' => $module
+            'module' => strtolower($module)
         ]);
         return $query->delete();
     }

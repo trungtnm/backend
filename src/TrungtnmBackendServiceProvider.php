@@ -3,6 +3,7 @@
 namespace Trungtnm\Backend;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Sentinel;
@@ -47,6 +48,7 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
 
         $this->filterPermission();
 
+        $this->extendValidator();
     }
 
     /**
@@ -144,5 +146,38 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
         $this->commands([
             'trungtnm:listifyAttach'
         ]);
+    }
+
+    /**
+     * add custom validation rules
+     */
+    protected function extendValidator()
+    {
+        Validator::extend('gt', function($attribute, $value, $parameters, $validator) {
+            return $value > $parameters[0];
+        });
+        Validator::extend('gte', function($attribute, $value, $parameters, $validator) {
+            return $value >= $parameters[0];
+        });
+
+        Validator::extend('lt', function($attribute, $value, $parameters, $validator) {
+            return $value < $parameters[0];
+        });
+        Validator::extend('lte', function($attribute, $value, $parameters, $validator) {
+            return $value <= $parameters[0];
+        });
+
+        Validator::replacer('gt', function($message, $attribute, $rule, $parameters) {
+            return str_replace([':attribute', ':gt'], [$attribute, $parameters[0]], $message);
+        });
+        Validator::replacer('gte', function($message, $attribute, $rule, $parameters) {
+            return str_replace([':attribute', ':gte'], [$attribute, $parameters[0]], $message);
+        });
+        Validator::replacer('lt', function($message, $attribute, $rule, $parameters) {
+            return str_replace([':attribute', ':lt'], [$attribute, $parameters[0]], $message);
+        });
+        Validator::replacer('lte', function($message, $attribute, $rule, $parameters) {
+            return str_replace([':attribute', ':lte'], [$attribute, $parameters[0]], $message);
+        });
     }
 }

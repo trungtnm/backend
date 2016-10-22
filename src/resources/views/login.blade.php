@@ -14,9 +14,9 @@
                     </div>
                 @endif
                 <div class="form-group">
-                    <input class="form-control" placeholder="Email" name="loginEmail" type="text" autofocus>
-                    @if( isset($validate) && $validate->has('loginEmail') )
-                        <span class="label label-danger">{{ $validate->first('loginEmail') }}</span>
+                    <input class="form-control" placeholder="Username" name="loginUsername" type="text" autofocus>
+                    @if( isset($validate) && $validate->has('loginUsername') )
+                        <span class="label label-danger">{{ $validate->first('loginUsername') }}</span>
                     @endif
                 </div>
                 <div class="form-group">

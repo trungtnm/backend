@@ -25,6 +25,8 @@ abstract class CoreBackendController extends BaseController implements BackendCo
     protected $defaultField = 'updated_at';
     protected $defaultOrder = 'desc';
     protected $showAddButton = true;
+    protected $showEditButton = true;
+    protected $showDeleteButton = true;
     protected $searchSelects = [];
     protected $searchFields = [];
 
@@ -107,8 +109,8 @@ abstract class CoreBackendController extends BaseController implements BackendCo
         $this->data['defaultField'] = $defaultField;
         $this->data['defaultOrder'] = $defaultOrder;
         $this->data['showFields'] = $this->model->showFields;
-        $this->data['showDeleteButton'] = Sentinel::hasAccess([str_slug($this->data['module']) . '.delete']);
-        $this->data['showEditButton'] = Sentinel::hasAccess([str_slug($this->data['module']) . '.edit']);
+        $this->data['showDeleteButton'] = $this->showDeleteButton && Sentinel::hasAccess([str_slug($this->data['module']) . '.delete']);
+        $this->data['showEditButton'] = $this->showEditButton && Sentinel::hasAccess([str_slug($this->data['module']) . '.edit']);
 
         $this->data['lists'] =
             $this->model->search($keyword, $filterBy)
@@ -141,7 +143,7 @@ abstract class CoreBackendController extends BaseController implements BackendCo
         }
 
         if (Request::isMethod('post')) {
-            if ($this->saveObject($id, $this->data)) {
+            if ($this->saveObject($id)) {
                 return $this->redirectAfterSave(request('save'));
             }
         }
@@ -273,7 +275,7 @@ abstract class CoreBackendController extends BaseController implements BackendCo
                 /**
                  * TODO: recheck permission
                  */
-                if (Sentinel::hasAccess($menu->module . ".*")) {
+                if (Sentinel::hasAccess(strtolower($menu->module) . ".*")) {
                     if ($menu->parent_id == 0) {
                         $listMenus[$menu->id] = $menu;
                     } else {
@@ -332,18 +334,15 @@ abstract class CoreBackendController extends BaseController implements BackendCo
 
     /**
      * @param int $id
-     * @param     $data
      *
      * @return bool
      */
-    public function saveObject($id = 0, &$data)
+    public function saveObject($id = 0)
     {
-        // check validate
-        $validate = Validator::make(Input::all(), $this->model->updateRules, $this->model->updateLangs);
-
+        $this->processData($id);
+        $validateData = array_merge($this->updateData, request()->all());
+        $validate = Validator::make($validateData, $this->model->updateRules, $this->model->updateLangs);
         if ($validate->passes()) {
-            //subclass must override this method to process saving data
-            $this->processData($id);
             //additional SEO fields
             $this->handleSeo();
             // File Upload

@@ -4,7 +4,6 @@ namespace Trungtnm\Backend\Http\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Sentinel;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Trungtnm\Backend\Core\BackendControllerInterface;
 use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Role;
@@ -12,8 +11,13 @@ use Trungtnm\Backend\Model\User;
 
 class UserController extends CoreBackendController implements BackendControllerInterface
 {
+    /**
+     * @var int
+     */
+    protected $specificRole;
 
-    public function __construct(User $model) {
+    public function __construct(User $model)
+    {
         //TODO: install for 1st times run this package
         $this->model = $model;
         $this->init();
@@ -31,44 +35,59 @@ class UserController extends CoreBackendController implements BackendControllerI
 
     /**
      * process data for saving
+     *
+     * @param int $id
+     *
+     * @return mixed|void
      */
     public function processData($id = 0)
     {
         $this->updateData = [
-            'username'  => request('username'),
-            'email'     => request('email'),
-            'first_name'  => request('first_name'),
+            'username'   => trim(strtolower(request('username'))),
+            'email'      => trim(strtolower(request('email'))),
+            'first_name' => request('first_name'),
             'last_name'  => request('last_name'),
-            'status'  => (bool) request('status'),
+            'status'     => (bool) request('status'),
         ];
+
+        if (request('password')) {
+            $this->updateData['password'] = request('password');
+        }
     }
 
     /**
      *
      * @param int $id
+     *
      * @return array
      */
-    public function saveObject($id = 0, &$data){
+    public function saveObject($id = 0)
+    {
         // check validate
         if (!$id) {
             $this->model->updateRules['password'] = "required|min:6";
         } else {
-            $this->model->updateRules['email'] = "required|unique:backend_users,email," . $id;
+            if (!empty($this->model->updateRules['email'])) {
+                $this->model->updateRules['email'] = "required|email|unique:backend_users,email," . $id;
+            }
+            if (!empty($this->model->updateRules['email'])) {
+                $this->model->updateRules['username'] = "required|min:6|unique:backend_users,username," . $id;
+            }
         }
-        $validate 		= Validator::make(Input::all(), $this->model->updateRules, $this->model->updateLangs);
-
-        if( $validate->passes() ){
-            $this->processData();
+        $this->processData();
+        $validateData = array_merge($this->updateData, request()->all());
+        $validate = Validator::make($validateData, $this->model->updateRules, $this->model->updateLangs);
+        if ($validate->passes()) {
             if ($password = request('password')) {
-                $this->updateData['password']  = $password;
+                $this->updateData['password'] = $password;
             }
             // File Upload
             $this->handleFileUpload();
             // End file Upload
             try {
-                $roleId = intval(request('roleId'));
+                $roleId = intval(request('roleId', $this->specificRole));
                 if (!$id) {
-                    $user = Sentinel::create($this->updateData);
+                    $user = Sentinel::registerAndActivate($this->updateData);
                 } else {
                     $user = $this->model->find($id);
                     $oldRoleId = $user->roleId;
@@ -92,60 +111,57 @@ class UserController extends CoreBackendController implements BackendControllerI
                 $user->renewCache();
                 $action = !$id ? self::ACTION_CREATE : self::ACTION_EDIT;
                 $this->afterSave($user, $action);
+
                 return true;
 
             } catch (\Exception $e) {
                 $this->data['message'] = $e->getMessage();
             }
 
-        }else{
+        } else {
             $this->data['validate'] = $validate->messages();
         }
+
         return false;
     }
 
-	/*----------------------------- END CREATE & UPDATE --------------------------------*/
+    /*----------------------------- END CREATE & UPDATE --------------------------------*/
 
-	/*----------------------------- END DELETE --------------------------------*/
+    /*----------------------------- END DELETE --------------------------------*/
 
 
-	public function changePasswordAction()
-	{
+    public function changePasswordAction()
+    {
         return view('TrungtnmBackend::user.changePassword', $this->data);
-	}
+    }
 
-	public function saveChangePasswordAction( )
-	{	
-		$validate = Validator::make(
+    public function saveChangePasswordAction()
+    {
+        $validate = Validator::make(
             request()->all(),
             $this->model->changePasswordRules,
             $this->model->changePasswordLangs
         );
-		if( $validate->passes() )
-		{
-			$oldPassword = request('oldPassword');
-			$newPassword = request('newPassword');
-			try
-			{
-				$user = Sentinel::getUser();
+        if ($validate->passes()) {
+            $oldPassword = request('oldPassword');
+            $newPassword = request('newPassword');
+            try {
+                $user = Sentinel::getUser();
                 $hasher = Sentinel::getHasher();
                 if (!$hasher->check($oldPassword, $user->getUserPassword())) {
                     throw new \Exception("Old password does not match");
                 }
-				if (Sentinel::update($user, ['password' => $newPassword])) {
-					$this->data['status'] 	= true;
-					$this->data['message'] 	= "Your password has been changed successfully";
-				}
-			}
-			catch (\Exception $e)
-			{
-				$this->data['message'] = $e->getMessage();
-			}
-		}
-		else
-		{
-			$this->data['validate'] = $validate->messages();
-		}
+                if (Sentinel::update($user, ['password' => $newPassword])) {
+                    $this->data['status'] = true;
+                    $this->data['message'] = "Your password has been changed successfully";
+                }
+            } catch (\Exception $e) {
+                $this->data['message'] = $e->getMessage();
+            }
+        } else {
+            $this->data['validate'] = $validate->messages();
+        }
+
         return view('TrungtnmBackend::user.changePassword', $this->data);
-	}
+    }
 }
