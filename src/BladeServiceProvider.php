@@ -5,7 +5,7 @@ use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider
 {
-    protected $defaultTitle = " - toicuocsong.com";
+    protected $titleSuffix = "";
     /**
      * registered directives
      * @var array
@@ -18,6 +18,7 @@ class BladeServiceProvider extends ServiceProvider
         foreach ($this->directives as $directive) {
             $this->{$directive}();
         }
+        $this->titleSuffix = config('trungtnm.titleSuffix');
     }
     public function register(){}
 
@@ -27,7 +28,7 @@ class BladeServiceProvider extends ServiceProvider
     private function title()
     {
         \Blade::directive('title', function($title) {
-                return "<?php echo $title  .  '{$this->defaultTitle}';?>";
+                return "<?php echo $title  .  '{$this->titleSuffix}';?>";
         });
     }
 
