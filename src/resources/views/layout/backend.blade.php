@@ -81,12 +81,14 @@
                  </a>
             </div>
         </div>
-        <div class="loader-inner line-scale" id="pageLoader">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div id="pageLoader" class="loader-mask">
+            <div class="loader-inner line-scale" id="mainLoader">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
 
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace-extra.min.js"></script>

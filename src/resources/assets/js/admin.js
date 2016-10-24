@@ -191,11 +191,11 @@ function deleteItem(id) {
 }
 
 function showLoading() {
-    $("#modalLoading").modal("show");
+    $("#pageLoader").show();
 }
 
 function hideLoading() {
-    $("#modalLoading").modal("hide");
+    $("#pageLoader").hide();
 }
 
 function setEditable() {

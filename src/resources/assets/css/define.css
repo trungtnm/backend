@@ -223,3 +223,26 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     color: #fff;
     text-decoration: none;
 }
+#pageLoader {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.36);
+    display: none;
+}
+#mainLoader {
+    position: fixed;
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.panel-collapse .form-horizontal .radio, .panel-collapse .form-horizontal .checkbox{
+    padding: 0 10px;
+}
+.panel-collapse .panel-body .form-group {
+    margin-bottom: 0;
+}
