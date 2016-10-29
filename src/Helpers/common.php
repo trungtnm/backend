@@ -121,14 +121,12 @@ function isMenuActive($routeName = '', $action = '', $activeClass = 'active', $r
 }
 
 if (!function_exists('numberFormat')) {
-
-    function numberFormat($number, $lang='vn', $separator = 0) {
+    function numberFormat($number, $lang= 'vn', $decimal = 2) {
         if($lang=='vn')
-            return number_format($number, $separator, ',', '.');
+            return number_format($number, $decimal, ',', '.');
         else
-            return number_format($number, $separator, '.', ',');
+            return number_format($number, $decimal, '.', ',');
     }
-
 }
 
 if (!function_exists('curlGet')) {

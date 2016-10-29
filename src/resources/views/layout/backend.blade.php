@@ -13,7 +13,7 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
        <!-- text fonts -->
-        {{--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">--}}
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">
         <link rel="stylesheet" href="{{ $assetURL }}css/bootstrap.min.css">
         <link rel="stylesheet" href="{{  $assetURL }}css/font-awesome.min.css">
 

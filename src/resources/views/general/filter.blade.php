@@ -22,7 +22,7 @@
             <label for="search__{{ $field }}"><span class="label label-info label-block">{{$info['label']}}</span></label>
             <select name="search__{{ $field }}" id="" class="{{ !empty($info['class']) ? $info['class'] : 'btn-primary' }}">
                 <option value="all">All</option>
-                @foreach($$info['options'] as $val => $text)
+                @foreach(${$info['options']} as $val => $text)
                     <option value="{{  $val }}">{{$text}}</option>
                 @endforeach
             </select>

@@ -33,9 +33,9 @@ class User extends EloquentUser
 		"oldPassword.required"			=>	"Please enter your current password",
 		"newPassword.required"          =>  "Please enter your new password",
         "newPassword.confirmed"         =>  "New password and password confirmation do not match",
-        "newPassword.min"               =>  "The new password must be at least 6 characters",
+        "newPassword.min"               =>  "The new password must be at least 5 characters",
         "newPassword_confirmation.required" =>  "Please enter password confirmation",
-        "newPassword_confirmation.min"  =>  "Password confirmation must be at least 6 characters"
+        "newPassword_confirmation.min"  =>  "Password confirmation must be at least 5 characters"
 	);
 
     public $showFields = [
@@ -104,7 +104,7 @@ class User extends EloquentUser
     ];
 
 	public $updateRules = [
-        "username"			=>	"required|min:6|unique:backend_users,username",
+        "username"			=>	"required|min:5|unique:backend_users,username",
         "email"				=>	"required|email|unique:backend_users,email",
         'password'			=>	"min:6",
         "roleId"           =>  "required"
