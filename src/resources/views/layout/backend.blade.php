@@ -58,8 +58,8 @@
         <div class="main-container">
             @include('TrungtnmBackend::includes.menu')
 
-            <div class="main-content ">
-                <div class="page-content ">
+            <div class="main-content">
+                <div class="page-content">
                     @if (Session::has('message'))
                         <div class="alert {{Session::get('status') ? 'alert-success' : 'alert-danger'}} ">{{ Session::get('message') }}</div>
                     @endif
@@ -81,15 +81,7 @@
                  </a>
             </div>
         </div>
-        <div id="pageLoader" class="loader-mask">
-            <div class="loader-inner line-scale" id="mainLoader">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
+        @include('TrungtnmBackend::includes.loader')
 
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace-extra.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/ace/ace-elements.min.js"></script>

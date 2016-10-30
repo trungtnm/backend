@@ -156,4 +156,20 @@ class User extends EloquentUser
             return 0;
         }
     }
+
+    /**
+     * Check if user has administration roles
+     * @return bool
+     */
+    public function hasAdministrationRole()
+    {
+        $administrationRoles = config('trungtnm.backend.admin_roles', ['root', 'admin']);
+        foreach ($administrationRoles as $role) {
+            if ($this->inRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

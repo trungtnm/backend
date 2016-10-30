@@ -112,6 +112,7 @@ class BackendController extends CoreBackendController
     }
 
     /**
+     * Check roles to allow login on backend
      * @param null $user
      *
      * @return bool
@@ -123,7 +124,7 @@ class BackendController extends CoreBackendController
             $user = Sentinel::getUser();
         }
         if ($user) {
-            $roles = config('trungtnm.backend.roles', []);
+            $roles = config('trungtnm.backend.allowed_roles', []);
             foreach ($roles as $role) {
                 if ($user->inRole($role)) {
                     $allowed = true;
