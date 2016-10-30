@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
+use InvalidArgumentException;
 use Sentinel;
 use Trungtnm\Backend\Core\CoreBackendController;
 use Trungtnm\Backend\Model\Module;
@@ -40,8 +41,14 @@ class BackendController extends CoreBackendController
                 }
                 // set session for ckeditor
                 $_SESSION['isLoggedIn'] = true;
+                $defaultPageConfig = config('trungtnm.backend.default_page_route');
+                try {
+                    $redirectUrl = route($defaultPageConfig);
+                } catch (InvalidArgumentException $e) {
+                    $redirectUrl = url($defaultPageConfig);
+                }
 
-                return Redirect::route('indexDashboard');
+                return redirect($redirectUrl);
             }
         }
 

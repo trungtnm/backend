@@ -35,11 +35,14 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
         //publish views, configs
         $this->publishes([
             __DIR__.'/resources/views' => base_path('resources/views/trungtnm/backend'),
-            __DIR__.'/config/trungtnm.backend.php' => config_path('trungtnm.backend.php'),
         ]);
         $this->publishes(
             [__DIR__.'/resources/assets' => public_path('vendor/trungtnm/backend')],
             'public'
+        );
+        $this->publishes(
+            [__DIR__.'/config/trungtnm.backend.php' => config_path('trungtnm.backend.php')],
+            'config'
         );
 
         $this->mergeConfigFrom(

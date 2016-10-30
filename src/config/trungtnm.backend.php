@@ -4,6 +4,7 @@ return [
     | start of backend zone
     */
     'uri'                          => 'backend',
+    'default_page_route'           => 'indexDashboard',
     'titleSuffix'                  => '',
     'uploadFolder'                 => 'uploads',
     'theme'                        => '',
