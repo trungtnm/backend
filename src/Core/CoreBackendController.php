@@ -1,6 +1,7 @@
 <?php
 namespace Trungtnm\Backend\Core;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\View;
 use Sentinel;
 use Trungtnm\Backend\Model\Language;
 use Trungtnm\Backend\Model\Menu;
+use Trungtnm\Backend\Model\User;
 use Trungtnm\Backend\Utility\HtmlMaker;
 
 abstract class CoreBackendController extends BaseController implements BackendControllerInterface
@@ -29,7 +31,10 @@ abstract class CoreBackendController extends BaseController implements BackendCo
     protected $showDeleteButton = true;
     protected $searchSelects = [];
     protected $searchFields = [];
-
+    /**
+     * @var User
+     */
+    protected $user;
     /**
      * @return mixed
      */
@@ -55,6 +60,7 @@ abstract class CoreBackendController extends BaseController implements BackendCo
             $this->data['model'] = $this->model;
             $this->data['maker'] = new HtmlMaker();
         }
+        $this->user = Sentinel::getUser();
     }
 
     public function redirectAfterSave($type, $message = null, $status = null)
@@ -116,6 +122,8 @@ abstract class CoreBackendController extends BaseController implements BackendCo
             $this->model->search($keyword, $filterBy)
                 ->orderBy($defaultField, $defaultOrder)
                 ->paginate($showNumber);
+
+        $this->getAdapterData();
 
         return view('TrungtnmBackend::general.adapter', $this->data);
     }
@@ -269,20 +277,17 @@ abstract class CoreBackendController extends BaseController implements BackendCo
     public function getMenu()
     {
         $listMenusTMP = Menu::getList();
-        $listMenus = [];
+        $listMenus = new Collection();
         if (!empty($listMenusTMP)) {
             foreach ($listMenusTMP as $menu) {
-                /**
-                 * TODO: recheck permission
-                 */
+                $item = clone $menu;
                 if (Sentinel::hasAccess(strtolower($menu->module) . ".*")) {
-                    if ($menu->parent_id == 0) {
-                        $listMenus[$menu->id] = $menu;
-                    } else {
-                        if (!empty($listMenus[$menu->parent_id])) {
-                            $listMenus[$menu->parent_id]['children'][] = $menu;
+                    $item->children->each(function($child, $key) use ($item) {
+                        if (!$child->status || !Sentinel::hasAccess(strtolower($child->module) . ".*")) {
+                            $item->children->forget($key);
                         }
-                    }
+                    });
+                    $listMenus->add($item);
                 }
             }
         }
@@ -617,6 +622,11 @@ abstract class CoreBackendController extends BaseController implements BackendCo
         }
 
         return false;
+    }
+
+    protected function getAdapterData()
+    {
+
     }
 
 }

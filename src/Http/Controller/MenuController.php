@@ -49,14 +49,17 @@ class MenuController extends CoreBackendController implements BackendControllerI
             'parent_id' => intval(request('parent_id')),
             'slug'      => trim(request('slug')),
             'icon'      => trim(request('icon')),
+            'order'      => trim(request('order')),
         ];
 
         return $this;
     }
 
     /**
-     * @param      $item
-     * @param bool $isDelete
+     * @param        $item
+     * @param string $action
+     *
+     * @internal param bool $isDelete
      */
     public function afterSave($item, $action = '')
     {
@@ -87,7 +90,7 @@ class MenuController extends CoreBackendController implements BackendControllerI
                 $role = $role->addPermission($permissionSlug);
                 if (!in_array($permissionSlug, $permissionAdded)) {
                     Permission::add($module, $permission);
-                    $permissionAdded[] = $module . $permission;
+                    $permissionAdded[] = $permissionSlug;
                 }
             }
             $role->save();

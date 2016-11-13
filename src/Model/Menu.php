@@ -61,6 +61,10 @@ class Menu extends AbstractModel
             'label'     => 'Menu slug',
             'type'      =>  'text'
         ],
+        'order' => [
+            'label'     => 'Order',
+            'type'      =>  'text'
+        ],
     ];
 
     public $searchFields = [
@@ -79,6 +83,11 @@ class Menu extends AbstractModel
         return $this->belongsTo('\Trungtnm\Backend\Model\Menu', 'parent_id');
     }
 
+    public function children()
+    {
+        return $this->hasMany('\Trungtnm\Backend\Model\Menu', 'parent_id')->orderBy('order', 'asc');
+    }
+
     /**
      * @param $query
      * @return mixed
@@ -86,8 +95,9 @@ class Menu extends AbstractModel
 	public function scopeGetList($query)
     {
 		return $query->where('status', 1)
-            ->orderBy('parent_id', 'asc')
+            ->where('parent_id', 0)
             ->orderBy('order', 'asc')
+            ->with('children')
             ->get();
 	}
 

@@ -7,8 +7,8 @@
 </script>        
 <ul class="nav nav-list" style="top: 0px;">
     @foreach ($menus as $menu)
-    @if( empty($menu['children'] ))
-    <li class="hsub @if( $module == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
+    @if( $menu->children->count() == 0)
+    <li class="hsub @if( strtolower($module) == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
         <a class="" href="{{ $backendUrl.$menu->slug }}" >
             <i class="menu-icon {{ $menu->icon }}"></i>
             <span class="menu-text"> {{ $menu->name }} </span>
@@ -16,7 +16,7 @@
         </a>
         <b class="arrow"></b>
     @else
-    <li class="hsub @if( $module == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
+    <li class="hsub open @if( strtolower($module) == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
         <a class="dropdown-toggle" href="#" >
             <i class="menu-icon {{  $menu->icon  }}"></i>
             <span class="menu-text">{{  $menu->name  }}</span>
@@ -24,10 +24,10 @@
         </a>
         <b class="arrow"></b>
     @endif
-        @if( !empty($menu['children'] ))
+        @if( !empty($menu->children ))
         <ul class="submenu">
-        @foreach ($menu['children'] as $child)
-                <li class="menu-child @if( $module == head(explode("/", $child->slug)) ){{ "active" }}@endif">
+        @foreach ($menu->children as $child)
+                <li class="menu-child @if( strtolower($module) == head(explode("/", $child->slug)) ){{ "active" }}@endif">
                     <a href="{{  $backendUrl.$child->slug  }}">
                         <i class="menu-icon {{  $child->icon  }}"></i>{{  $child->name }}
                     </a>
