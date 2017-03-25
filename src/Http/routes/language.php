@@ -1,5 +1,5 @@
 <?php
-Route::group(array('before' => 'hasAccess' ),function(){
+Route::group(array('middleware' => 'hasAccess' ),function(){
     // Menu
     $module = "Language";
     $prefixSlug = str_slug($module);
@@ -8,14 +8,14 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::get(
             '/',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.read',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.read',
                 'as'  =>  $module.'Index','uses' => $module.'Controller@indexAction'
             )
         );
         Route::get(
             'adapter',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.read',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.read',
                 'as'  =>  $module.'Adapter',
                 'uses'=>  $module.'Controller@adapterAction'
             )
@@ -25,7 +25,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::get(
             'create',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.create',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.create',
                 'as' => $module.'Create',
                 'uses' => $module.'Controller@editAction'
             )
@@ -33,7 +33,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::post(
             'create',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.create',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.create',
                 'as' => $module.'Create',
                 'uses' => $module.'Controller@editAction'
             )
@@ -43,7 +43,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::get(
             'update/{id}',
             array(
-                'before' =>   'hasAccess:'.$prefixSlug.'.edit',
+                'middleware' =>   'hasAccess:'.$prefixSlug.'.edit',
                 'as'    =>  $module.'Update',
                 'uses' => $module.'Controller@editAction'
             )
@@ -51,7 +51,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::post(
             'update/{id}',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.edit',
                 'as' => $module.'Update',
                 'uses' => $module.'Controller@editAction'
             )
@@ -60,7 +60,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::post(
             'toggle-boolean',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.publish',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.publish',
                 'as' => $module.'ToogleBoolean',
                 'uses' => $module.'Controller@toggleAction'
             )
@@ -69,7 +69,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::post(
             'delete',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.delete',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.delete',
                 'as' => $module.'Delete',
                 'uses' => $module.'Controller@deleteAction'
             )
@@ -78,7 +78,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::get(
             'get-source/{id}/{field}',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.edit',
                 'as' => $module.'GetSource',
                 'uses' =>  $module.'Controller@getSourceAction'
             )
@@ -86,7 +86,7 @@ Route::group(array('before' => 'hasAccess' ),function(){
         Route::post(
             'get-source/{id}/{field}',
             array(
-                'before' => 'hasAccess:'.$prefixSlug.'.edit',
+                'middleware' => 'hasAccess:'.$prefixSlug.'.edit',
                 'as' => $module.'PostSource',
                 'uses' => $module.'Controller@saveSourceAction'
             )

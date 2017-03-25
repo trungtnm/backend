@@ -1,5 +1,5 @@
 @if($type == 'html')
-<textarea class="form-control" rows="10" cols="80" id="{{ $field }}" name="{{ $field }}" placeholder="">{{{ $value or Input::get($field) }}}</textarea>
+<textarea class="form-control" rows="10" cols="80" id="{{ $field }}" name="{{ $field }}" placeholder="">{!! $value or request()->get($field)  !!}</textarea>
 <script>
     var editor = CKEDITOR.replace( '{{ $field }}' );
     CKFinder.setupCKEditor( editor, "{{{asset('public/backend/ckfinder/')}}}/" );
@@ -12,5 +12,5 @@
 </div>
 <?php } ?>
 @else
-<input type="text" class="form-control" id="{{ $field }}" value="{{{ $value or Input::get($field) }}}" name="{{ $field }}" placeholder="">
+<input type="text" class="form-control" id="{{ $field }}" value="{{{ $value or request()->get($field) }}}" name="{{ $field }}" placeholder="">
 @endif

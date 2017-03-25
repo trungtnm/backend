@@ -38,12 +38,12 @@
         <script type="text/javascript" src="{{ $assetURL }}js/respond.min.js" ></script>
         <![endif]-->
         <script type="text/javascript">
-            var frontendRoot = "{{ url() }}/";
+            var frontendRoot = "{{ url('/') }}/";
             var root = "{{ url(config('trungtnm.backend.uri')) }}/";
             var assetURL = "{{ $assetURL }}";
-            var module = "{{Request::segment(2) }}";
+            var module = "{{ Request::segment(2) }}";
         </script>
-        
+
         <script type="text/javascript" src="{{ $assetURL }}js/vendor/modernizr-2.6.2.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/vendor/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="{{ $assetURL }}js/bootstrap.min.js"></script>

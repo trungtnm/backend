@@ -15,10 +15,10 @@ class VerifyCsrfToken extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfT
     {
         if (
             $request->segment(1) == trim(config('trungtnm.backend.uri'), '/')
-            && $request->isXmlHttpRequest()
-            && Sentinel::check()
         ) {
-            return true;
+            if (!$request->segment(2) || ($request->isXmlHttpRequest() && Sentinel::check())) {
+                return true;
+            }
         }
 
         return false;

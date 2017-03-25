@@ -68,6 +68,7 @@ class BackendController extends CoreBackendController
                     'status'   => 1
                 ];
                 $user = Sentinel::authenticate($dataLogin, $remember);
+                Sentinel::login($user);
                 if ($user) {
                     if (!$this->checkRole($user)) {
                         throw new \Exception('Account is not exists');

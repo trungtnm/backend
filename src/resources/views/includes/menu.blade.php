@@ -4,8 +4,9 @@
         ace.settings.check('sidebar', 'fixed')
     } catch (e) {
     }
-</script>        
+</script>
 <ul class="nav nav-list" style="top: 0px;">
+    @if(!empty($menus))
     @foreach ($menus as $menu)
     @if( $menu->children->count() == 0)
     <li class="hsub @if( strtolower($module) == head(explode("/", $menu->slug)) ){{ "active" }}@endif">
@@ -39,7 +40,7 @@
     </li>
 
     @endforeach
-
+    @endif
 </ul>
     <!-- /.sidebar -->
 <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">

@@ -1,2 +1,2 @@
-<textarea class="form-control" id="{{ $field }}" name="{{ $field }}" placeholder="">{{{ $value or Input::get($field) }}}</textarea>
+<textarea class="form-control" id="{{ $field }}" name="{{ $field }}" placeholder="">{{{ $value or request()->get($field) }}}</textarea>
 {!! $helpText !!}

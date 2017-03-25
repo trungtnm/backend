@@ -49,7 +49,7 @@ class MenuController extends CoreBackendController implements BackendControllerI
             'parent_id' => intval(request('parent_id')),
             'slug'      => trim(request('slug')),
             'icon'      => trim(request('icon')),
-            'order'      => trim(request('order')),
+            'order'     => trim(request('order')),
         ];
 
         return $this;
@@ -65,7 +65,7 @@ class MenuController extends CoreBackendController implements BackendControllerI
     {
         $adminRoles = [
             Sentinel::findRoleById(Role::ROOT),
-            Sentinel::findRoleById(Role::ADMIN)
+            Sentinel::findRoleById(Role::ADMIN),
         ];
         if ($action == self::ACTION_CREATE) {
             $this->addPermission($adminRoles, $item->module);
@@ -154,7 +154,7 @@ class MenuController extends CoreBackendController implements BackendControllerI
                 if ($item->delete()) {
                     if ($parent_id == 0) {
                         $this->model->where('parent_id', $id)->update([
-                            'parent_id' => 0
+                            'parent_id' => 0,
                         ]);
                     }
                     $this->afterSave($item, self::ACTION_DELETE);

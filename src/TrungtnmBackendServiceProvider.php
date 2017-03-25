@@ -49,8 +49,6 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
             __DIR__.'/config/trungtnm.backend.php', 'trungtnm.backend'
         );
 
-        $this->filterPermission();
-
         $this->extendValidator();
     }
 
@@ -87,7 +85,8 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
     {
         Route::group([
             'namespace' => $controllerNamespace,
-            'prefix' => config('trungtnm.backend.uri')
+            'prefix' => config('trungtnm.backend.uri'),
+            'middleware' => 'web'
         ],
         function() use ($routeFolder) {
             // scan routes php file in route folder -> route folder should contain only Laravel routes define
@@ -100,49 +99,13 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
     }
 
     /**
-     * check for permission of modules
-     */
-    protected function filterPermission()
-    {
-        Route::filter('hasAccess', function($route, $request, $permission = null)
-        {
-            if (Sentinel::check()) {
-                if (empty($permission) || Sentinel::hasAccess([$permission])) {
-                    return;
-                }
-            }
-            if (empty($permission)) {
-                return redirect(route('loginBackend'))->withErrors('Please login first');
-            } else {
-                return redirect(route('accessDenied'))->withErrors('Permission denied.');
-            }
-
-        });
-
-        Route::filter('loggedIn', function($route, $request, $permission = null)
-        {
-            if (Sentinel::check()) {
-                if (empty($permission) || Sentinel::hasAccess([$permission])) {
-                    return;
-                }
-            }
-            if (empty($permission)) {
-                return redirect(route('homepage'))->withErrors('Please login first');
-            } else {
-                return redirect(route('homepage'))->withErrors('Permission denied.');
-            }
-
-        });
-    }
-
-    /**
      * Register the package console commands.
      *
      * @return void
      */
     protected function registerConsoleCommands()
     {
-        $this->app->bindShared('trungtnm:listifyAttach', function($app)
+        $this->app->singleton('trungtnm:listifyAttach', function($app)
         {
             return new Commands\ListifyAttach();
         });

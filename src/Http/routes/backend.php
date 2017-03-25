@@ -1,5 +1,5 @@
 <?php
-Route::group(['before' => 'hasAccess'], function() {
+Route::group(['middleware' => 'hasAccess'], function() {
         Route::get('/dashboard', [
             'as' => 'indexDashboard',
             'uses' => 'BackendController@indexAction'
@@ -19,7 +19,7 @@ Route::group(['before' => 'hasAccess'], function() {
         ]);
     }
 );
-Route::group(['before' => 'notAuth'], function() {
+Route::group(['middleware' => 'guest'], function() {
     Route::get('/', array('as' => 'loginBackend', 'uses' => 'BackendController@loginAction'));
     Route::post('/', array('as' => 'loginBackend', 'uses' => 'BackendController@loginAction'));
 //    TODO: do some databases setup here
