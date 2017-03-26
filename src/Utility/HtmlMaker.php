@@ -161,7 +161,7 @@ class HtmlMaker
 	public function number()
 	{
 		$suffix = !empty($this->suffix) ? $this->suffix : '';
-		$decimal = !empty($this->seperator) ? $this->seperator : 2;
+		$decimal = !empty($this->seperator) ? $this->seperator : 0;
 		return "<td>".(numberFormat( $this->value, '', $decimal)). $suffix ."</td>";
 	}
 

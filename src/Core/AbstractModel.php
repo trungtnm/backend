@@ -5,26 +5,27 @@ use Eloquent;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
-class AbstractModel extends Eloquent{
+class AbstractModel extends Eloquent
+{
     /**
      * @var bool
      */
-	public $showAddButton = true;
+    public $showAddButton = true;
 
     /**
      * @var array
      */
-	public $updateRules = [];
+    public $updateRules = [];
 
     /**
      * @var array
      */
-	public $updateLangs = [];
+    public $updateLangs = [];
 
     /**
      * @var array
      */
-	public $showFields = [];
+    public $showFields = [];
 
     /**
      * @var array
@@ -36,7 +37,8 @@ class AbstractModel extends Eloquent{
      *
      * @param array $attributes
      */
-	public function __construct(array $attributes  = []){
-		parent::__construct($attributes);
-	}
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
 }
