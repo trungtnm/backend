@@ -1,6 +1,7 @@
 <?php
 namespace Trungtnm\Backend\Http\Controller;
 
+use Cartalyst\Sentinel\Users\UserInterface;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -68,12 +69,13 @@ class BackendController extends CoreBackendController
                     'status'   => 1
                 ];
                 $user = Sentinel::authenticate($dataLogin, $remember);
-                Sentinel::login($user);
-                if ($user) {
+                if ($user instanceof UserInterface) {
                     if (!$this->checkRole($user)) {
-                        throw new \Exception('Account is not exists');
+                        throw new \Exception('Account is not exists.');
                     }
                     $data['status'] = true;
+                } else {
+                    throw new \Exception('Username or password is not valid.');
                 }
             } catch (\Exception $e) {
                 $data['message'] = $e->getMessage();

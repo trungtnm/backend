@@ -24,7 +24,8 @@
     "autoload": {
       "psr-4": {
         "Trungtnm\\Backend\\": "src/"
-      }
+      },
+      "files": ["src/Helpers/common.php"]
     },
     "minimum-stability": "dev"
 }

@@ -120,4 +120,3 @@
 @section('script')
     {{-- your scripts for index page goes here --}}
 @endsection
-
