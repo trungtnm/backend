@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1>
         <i id="moduleIcon" class=""></i>
-        <span>{{ ucfirst($module) }}</span>
+        <span>{{ ucfirst(isset($moduleName) ? $moduleName : $module) }}</span>
         @if (!empty($item))
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>

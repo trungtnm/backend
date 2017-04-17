@@ -52,6 +52,7 @@ abstract class CoreBackendController extends BaseController implements BackendCo
             ])->first();
             $this->data['module'] = 'backend';
             if ($menu) {
+                $this->data['moduleName'] = ucfirst($menu->name);
                 $this->data['module'] = ucfirst($menu->module);
                 $this->data['defaultURL'] = $menu->slug;
             } elseif ($module != "access-denied") {
