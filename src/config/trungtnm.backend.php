@@ -10,12 +10,13 @@ return [
     'theme'                        => '',
     'modules_route_path'           => app_path('Http/Route/Backend'),
     'modules_controller_namespace' => 'App\Http\Controllers\Backend',
+    'settingClass'                 => '',
     'allowed_roles'                => [
         'root',
-        'admin'
+        'admin',
     ],
     'admin_roles'                  => [
         'root',
-        'admin'
-    ]
+        'admin',
+    ],
 ];
