@@ -61,4 +61,7 @@
     <div id="preHiddenFields">
         {!! $customView or "" !!}
     </div>
+    @if(!empty($scripts))
+        {!! $scripts !!}
+    @endif
 @endsection
