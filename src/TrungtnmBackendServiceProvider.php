@@ -70,8 +70,11 @@ class TrungtnmBackendServiceProvider extends ServiceProvider
      */
     protected function map(){
         //add routes of core modules
-        $coreRouteFolder = __DIR__ . '/Http/routes';
+        $coreRouteFolder = __DIR__ . '/Http/routes/backend';
         $this->addRoutes($this->controllerNamespace, $coreRouteFolder);
+
+        // laravel file manager
+        require __DIR__ . '/Http/routes/laravel-file-manager.php';
 
         //add routes of user defined modules
         $userControllerNamespace = config('trungtnm.backend.modules_controller_namespace');

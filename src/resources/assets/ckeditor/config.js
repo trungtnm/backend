@@ -1,12 +1,13 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
-var base_url = assetURL.replace("public/", "");
+
 CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
+
 	config.toolbar = [
         {
             name: 'document',
@@ -60,13 +61,12 @@ CKEDITOR.editorConfig = function( config ) {
 
     ];
 
-        config.filebrowserBrowseUrl = base_url + '/ckfinder/ckfinder.html';
-        config.filebrowserImageBrowseUrl = base_url + '/ckfinder/ckfinder.html?type=Images';
-        config.filebrowserUploadUrl = base_url + '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-        config.filebrowserImageUploadUrl = base_url + '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-
-    config.enterMode = CKEDITOR.ENTER_BR;
+	config.enterMode = CKEDITOR.ENTER_BR;
     config.autoParagraph = false;
     config.entities = false;
-    config.extraPlugins = 'youtube';
+    config.extraPlugins = 'image2,widget,lineutils,widgetselection,embed,notificationaggregator,notification,toolbar,button';
+
+	config.image2_alignClasses = [ 'text-left', 'text-center', 'text-right' ];
+	config.image2_captionedClass = 'image-captioned';
+
 };
